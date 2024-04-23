@@ -1,8 +1,7 @@
 # Solana PHP SDK
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/attestto-com/solana-php-sdk.svg?style=flat-square)](https://packagist.org/packages/attestto-com/solana-php-sdk)
-[![GitHub Tests Action Status](https://github.com/attestto-com/solana-php-sdk/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/attestto-com/solana-php-sdk/actions?query=workflow%3Arun-tests+branch%3Amain)
-
+[![GitHub Tests Action Status](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml)
 ---
 
 :notice: Forked from:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk)
