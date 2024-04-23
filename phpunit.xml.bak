@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+         colors="true"
+         verbose="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Unit + Feature Tests">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <log type="coverage-html" target="coverage/" showUncoveredFiles="true"/>
+    </logging>
+</phpunit>
