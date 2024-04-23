@@ -5,7 +5,7 @@
 
 ---
 
-:notice: Forked from:  [attestto/solana-php-sdk](https://github.com/attestto/solana-php-sdk)
+:notice: Forked from:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk)
 
 ---
 
