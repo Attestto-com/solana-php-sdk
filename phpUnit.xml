@@ -8,11 +8,11 @@
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
+     <source>
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </source>
     <logging>
         <log type="coverage-html" target="coverage/" showUncoveredFiles="true"/>
     </logging>
