@@ -1,9 +1,9 @@
 <?php
 
-namespace attestto\SolanaPhpSdk;
+namespace Attestto\SolanaPhpSdk;
 
-use attestto\SolanaPhpSdk\Util\AccountMeta;
-use attestto\SolanaPhpSdk\Util\Buffer;
+use Attestto\SolanaPhpSdk\Util\AccountMeta;
+use Attestto\SolanaPhpSdk\Util\Buffer;
 
 class TransactionInstruction
 {

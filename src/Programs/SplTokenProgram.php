@@ -1,8 +1,8 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Programs;
+namespace Attestto\SolanaPhpSdk\Programs;
 
-use attestto\SolanaPhpSdk\Program;
+use Attestto\SolanaPhpSdk\Program;
 
 class SplTokenProgram extends Program
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace attestto\SolanaPhpSdk;
+namespace Attestto\SolanaPhpSdk;
 
 class Program
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Programs;
+namespace Attestto\SolanaPhpSdk\Programs;
 
-use attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
-use attestto\SolanaPhpSdk\Program;
-use attestto\SolanaPhpSdk\PublicKey;
-use attestto\SolanaPhpSdk\TransactionInstruction;
-use attestto\SolanaPhpSdk\Util\AccountMeta;
+use Attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
+use Attestto\SolanaPhpSdk\Program;
+use Attestto\SolanaPhpSdk\PublicKey;
+use Attestto\SolanaPhpSdk\TransactionInstruction;
+use Attestto\SolanaPhpSdk\Util\AccountMeta;
 
 class SystemProgram extends Program
 {

@@ -1,5 +1,5 @@
 {
-    "name": "attestto-com/solana-php-sdk",
+    "name": "attestto/solana-php-sdk",
     "description": "Solana PHP SDK for interacting with the Solana blockchain",
     "keywords": [
         "attestto",
@@ -48,12 +48,12 @@
     },
     "autoload": {
         "psr-4": {
-            "attestto\\SolanaPhpSdk\\": "src"
+            "Attestto\\SolanaPhpSdk\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "attestto\\SolanaPhpSdk\\Tests\\": "tests"
+            "Attestto\\SolanaPhpSdk\\Tests\\": "tests"
         }
     },
     "scripts": {

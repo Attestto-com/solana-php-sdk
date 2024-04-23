@@ -1,8 +1,8 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Accounts;
+namespace Attestto\SolanaPhpSdk\Accounts;
 
-use attestto\SolanaPhpSdk\Borsh;
+use Attestto\SolanaPhpSdk\Borsh;
 
 class Creator
 {

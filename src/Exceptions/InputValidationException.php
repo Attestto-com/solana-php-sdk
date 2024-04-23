@@ -1,6 +1,6 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Exceptions;
+namespace Attestto\SolanaPhpSdk\Exceptions;
 
 class InputValidationException extends BaseSolanaPhpSdkException
 {

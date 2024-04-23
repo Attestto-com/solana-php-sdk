@@ -1,9 +1,9 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Accounts;
+namespace Attestto\SolanaPhpSdk\Accounts;
 
-use attestto\SolanaPhpSdk\Borsh\Borsh;
-use attestto\SolanaPhpSdk\Borsh\BorshDeserializable;
+use Attestto\SolanaPhpSdk\Borsh\Borsh;
+use Attestto\SolanaPhpSdk\Borsh\BorshDeserializable;
 
 class Metadata
 {

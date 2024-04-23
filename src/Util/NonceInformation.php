@@ -1,8 +1,8 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Util;
+namespace Attestto\SolanaPhpSdk\Util;
 
-use attestto\SolanaPhpSdk\TransactionInstruction;
+use Attestto\SolanaPhpSdk\TransactionInstruction;
 
 class NonceInformation
 {

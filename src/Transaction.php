@@ -1,19 +1,19 @@
 <?php
 
-namespace attestto\SolanaPhpSdk;
+namespace Attestto\SolanaPhpSdk;
 
-use attestto\SolanaPhpSdk\Exceptions\GenericException;
-use attestto\SolanaPhpSdk\Exceptions\InputValidationException;
-use attestto\SolanaPhpSdk\Util\AccountMeta;
-use attestto\SolanaPhpSdk\Util\Buffer;
-use attestto\SolanaPhpSdk\Util\CompiledInstruction;
-use attestto\SolanaPhpSdk\Util\HasPublicKey;
-use attestto\SolanaPhpSdk\Util\HasSecretKey;
-use attestto\SolanaPhpSdk\Util\MessageHeader;
-use attestto\SolanaPhpSdk\Util\NonceInformation;
-use attestto\SolanaPhpSdk\Util\ShortVec;
-use attestto\SolanaPhpSdk\Util\SignaturePubkeyPair;
-use attestto\SolanaPhpSdk\Util\Signer;
+use Attestto\SolanaPhpSdk\Exceptions\GenericException;
+use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
+use Attestto\SolanaPhpSdk\Util\AccountMeta;
+use Attestto\SolanaPhpSdk\Util\Buffer;
+use Attestto\SolanaPhpSdk\Util\CompiledInstruction;
+use Attestto\SolanaPhpSdk\Util\HasPublicKey;
+use Attestto\SolanaPhpSdk\Util\HasSecretKey;
+use Attestto\SolanaPhpSdk\Util\MessageHeader;
+use Attestto\SolanaPhpSdk\Util\NonceInformation;
+use Attestto\SolanaPhpSdk\Util\ShortVec;
+use Attestto\SolanaPhpSdk\Util\SignaturePubkeyPair;
+use Attestto\SolanaPhpSdk\Util\Signer;
 
 class Transaction
 {

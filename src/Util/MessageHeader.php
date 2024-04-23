@@ -1,6 +1,6 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Util;
+namespace Attestto\SolanaPhpSdk\Util;
 
 class MessageHeader
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace attestto\SolanaPhpSdk;
+namespace Attestto\SolanaPhpSdk;
 
-use attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
-use attestto\SolanaPhpSdk\Util\Commitment;
+use Attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
+use Attestto\SolanaPhpSdk\Util\Commitment;
 
 class Connection extends Program
 {

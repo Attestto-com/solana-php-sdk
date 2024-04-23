@@ -1,8 +1,8 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Util;
+namespace Attestto\SolanaPhpSdk\Util;
 
-use attestto\SolanaPhpSdk\PublicKey;
+use Attestto\SolanaPhpSdk\PublicKey;
 
 class Signer implements HasPublicKey, HasSecretKey
 {

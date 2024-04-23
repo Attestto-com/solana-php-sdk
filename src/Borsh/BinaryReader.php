@@ -1,10 +1,10 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Borsh;
+namespace Attestto\SolanaPhpSdk\Borsh;
 
-use attestto\SolanaPhpSdk\Exceptions\TodoException;
-use attestto\SolanaPhpSdk\Util\Buffer;
-use attestto\SolanaPhpSdk\PublicKey;
+use Attestto\SolanaPhpSdk\Exceptions\TodoException;
+use Attestto\SolanaPhpSdk\Util\Buffer;
+use Attestto\SolanaPhpSdk\PublicKey;
 use Closure;
 
 class BinaryReader

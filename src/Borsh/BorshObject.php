@@ -1,6 +1,6 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Borsh;
+namespace Attestto\SolanaPhpSdk\Borsh;
 
 trait BorshObject
 {

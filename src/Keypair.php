@@ -1,11 +1,11 @@
 <?php
 
-namespace attestto\SolanaPhpSdk;
+namespace Attestto\SolanaPhpSdk;
 
 use SodiumException;
-use attestto\SolanaPhpSdk\Util\Buffer;
-use attestto\SolanaPhpSdk\Util\HasPublicKey;
-use attestto\SolanaPhpSdk\Util\HasSecretKey;
+use Attestto\SolanaPhpSdk\Util\Buffer;
+use Attestto\SolanaPhpSdk\Util\HasPublicKey;
+use Attestto\SolanaPhpSdk\Util\HasSecretKey;
 
 /**
  * An account keypair used for signing transactions.

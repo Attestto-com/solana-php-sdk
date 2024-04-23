@@ -1,7 +1,7 @@
 # Solana PHP SDK
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/attestto/solana-php-sdk.svg?style=flat-square)](https://packagist.org/packages/attestto/solana-php-sdk)
-[![GitHub Tests Action Status](https://github.com/attestto/solana-php-sdk/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/attestto/solana-php-sdk/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/attestto-com/solana-php-sdk.svg?style=flat-square)](https://packagist.org/packages/attestto-com/solana-php-sdk)
+[![GitHub Tests Action Status](https://github.com/attestto-com/solana-php-sdk/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/attestto-com/solana-php-sdk/actions?query=workflow%3Arun-tests+branch%3Amain)
 
 ---
 
@@ -16,7 +16,7 @@ Simple PHP SDK for Solana.
 You can install the package via composer:
 
 ```bash
-composer require attestto/solana-php-sdk
+composer require attestto-com/solana-php-sdk
 ```
 
 ## Usage
@@ -26,8 +26,8 @@ composer require attestto/solana-php-sdk
 You can use the `Connection` class for convenient access to API methods. Some are defined in the code:
 
 ```php
-use attestto\SolanaPhpSdk\Connection;
-use attestto\SolanaPhpSdk\SolanaRpcClient;
+use Attestto\SolanaPhpSdk\Connection;
+use Attestto\SolanaPhpSdk\SolanaRpcClient;
 
 // Using a defined method
 $sdk = new Connection(new SolanaRpcClient(SolanaRpcClient::MAINNET_ENDPOINT));
@@ -42,7 +42,7 @@ For all the possible methods, see the [API documentation](https://docs.solana.co
 The `Connection` class is just a light convenience layer on top of the RPC client. You can, if you want, use the client directly, which allows you to work with the full `Response` object:
 
 ```php
-use attestto\SolanaPhpSdk\SolanaRpcClient;
+use Attestto\SolanaPhpSdk\SolanaRpcClient;
 
 $client = new SolanaRpcClient(SolanaRpcClient::MAINNET_ENDPOINT);
 $accountInfoResponse = $client->call('getAccountInfo', ['4fYNw3dojWmQ4dXtSGE9epjRGy9pFSx62YypT7avPYvA']);

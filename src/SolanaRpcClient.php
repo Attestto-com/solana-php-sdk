@@ -1,12 +1,12 @@
 <?php
 
-namespace attestto\SolanaPhpSdk;
+namespace Attestto\SolanaPhpSdk;
 
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Client\Response;
-use attestto\SolanaPhpSdk\Exceptions\GenericException;
-use attestto\SolanaPhpSdk\Exceptions\InvalidIdResponseException;
-use attestto\SolanaPhpSdk\Exceptions\MethodNotFoundException;
+use Attestto\SolanaPhpSdk\Exceptions\GenericException;
+use Attestto\SolanaPhpSdk\Exceptions\InvalidIdResponseException;
+use Attestto\SolanaPhpSdk\Exceptions\MethodNotFoundException;
 
 /**
  * @see https://docs.solana.com/developing/clients/jsonrpc-api

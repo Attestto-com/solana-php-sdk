@@ -1,8 +1,8 @@
 <?php
 
-namespace attestto\SolanaPhpSdk\Accounts\Did;
+namespace Attestto\SolanaPhpSdk\Accounts\Did;
 
-use attestto\SolanaPhpSdk\Borsh;
+use Attestto\SolanaPhpSdk\Borsh;
 
 /**
  * Class VerificationMethodStruct
@@ -10,7 +10,7 @@ use attestto\SolanaPhpSdk\Borsh;
  * This class represents a verification method for a Decentralized Identifier (DID) account.
  * It provides methods for creating and managing verification methods, signing and verifying messages, and other related operations.
  * @version 1.0
- * @package attestto\SolanaPhpSdk\Accounts\Did
+ * @package Attestto\SolanaPhpSdk\Accounts\Did
  * @license MIT
  * @author Eduardo Chongkan
  * @link https://chongkan.com
