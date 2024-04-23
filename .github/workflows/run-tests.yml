@@ -11,10 +11,10 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: ['7.4', '8.0']
+                php: ['8.2']
                 experimental: [false]
                 include:
-                    - php: '8.1'
+                    - php: '8.2'
                       experimental: true
         steps:
             - uses: actions/checkout@v2
