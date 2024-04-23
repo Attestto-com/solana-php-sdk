@@ -24,3 +24,4 @@ Homestead.json
 .vscode
 .history
 .idea
+.phpunit.cache
