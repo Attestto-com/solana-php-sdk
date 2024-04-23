@@ -8,11 +8,13 @@
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
-     <source>
+   
+    <coverage>
     <include>
-      <directory suffix=".php">src</directory>
+        <directory suffix=".php">src</directory>
     </include>
-  </source>
+</coverage>
+ 
     <logging>
         <log type="coverage-html" target="coverage/" showUncoveredFiles="true"/>
     </logging>
