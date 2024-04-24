@@ -61,7 +61,10 @@
         "test": "vendor/bin/phpunit tests --coverage-html coverage --colors  --coverage-filter src/"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": false
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
