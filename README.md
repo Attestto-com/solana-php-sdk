@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/attestto-com/solana-php-sdk.svg?style=flat-square)](https://packagist.org/packages/attestto-com/solana-php-sdk)
 [![GitHub Tests Action Status](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml)
+[![Coverage (CodeCov)](https://codecov.io/github/Attestto-com/solana-php-sdk/graph/badge.svg?token=M12LECZ9QE)](https://codecov.io/github/Attestto-com/solana-php-sdk)
 ---
 
 :notice: Forked from:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk)
