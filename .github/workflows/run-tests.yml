@@ -24,7 +24,7 @@ jobs:
                   key: php${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
                   restore-keys: php${{ matrix.php }}-
             - run: composer install --prefer-dist --optimize-autoloader --no-interaction --no-progress
-            - run: composer test
+            - run: composer test --coverage-clover=coverage.xml
             - name: Upload test coverage
               uses: actions/upload-artifact@v4
               with:
@@ -33,5 +33,6 @@ jobs:
             - name: Upload coverage reports to Codecov
               uses: codecov/codecov-action@v4.0.1
               with:
+                    file: ./coverage.xml
                     token: ${{ secrets.CODECOV_TOKEN }}
                     slug: Attestto-com/solana-php-sdk
