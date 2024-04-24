@@ -58,13 +58,10 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit tests --coverage-filter src/"
+        "test": "vendor/bin/phpunit tests --coverage-clover=coverage.xml --coverage-filter src/"
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": false
-        }
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true
