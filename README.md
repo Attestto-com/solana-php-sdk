@@ -16,7 +16,7 @@ Simple PHP SDK for Solana.
 You can install the package via composer:
 
 ```bash
-composer require attestto-com/solana-php-sdk
+composer require attestto/solana-php-sdk
 ```
 
 ## Usage
