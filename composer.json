@@ -59,7 +59,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit tests --coverage-html coverage/ --colors  --coverage-filter src/"
+        "test": "vendor/bin/pest --coverage-html coverage/ --colors  --coverage-filter src/"
     },
     "config": {
         "sort-packages": true,
