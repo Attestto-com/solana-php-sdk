@@ -104,7 +104,7 @@ class Connection extends Program
 	public function simulateTransaction(Transaction $transaction, array $signers, array $params = [])
 	{
 		$transaction->sign(...$signers);
-		
+	
 		$rawBinaryString = $transaction->serialize(false);
 		
 		$hashString = sodium_bin2base64($rawBinaryString, SODIUM_BASE64_VARIANT_ORIGINAL);

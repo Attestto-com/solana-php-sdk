@@ -4,10 +4,11 @@ namespace Attestto\SolanaPhpSdk\Accounts;
 
 use Attestto\SolanaPhpSdk\Borsh\Borsh;
 use Attestto\SolanaPhpSdk\Borsh\BorshDeserializable;
+use Attestto\SolanaPhpSdk\Borsh\BorshObject;
 
 class Metadata
 {
-    use BorshDeserializable;
+    use BorshObject;
 
     public const SCHEMA = [
         Creator::class => Creator::SCHEMA[Creator::class],

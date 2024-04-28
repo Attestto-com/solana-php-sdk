@@ -29,29 +29,17 @@ class DidSolProgram extends Program
     /**
      * getDidDataAcccountInfo
      *
-     * @param SolanaRpcClient $client
-     * @param string $base58SubjectPk The PK of the DID.
-     * @param bool $onlyAccData
-     * @return DidData|string
+     * @param SolanaRpcClient|string $client The RPC client or the custom RPC endpoint URL to use.
+     * @param string $base58SubjectPk The Public Key of the DID.
+     * @return string (JSON) The account info of the DID data account as it comes from the RPC
      * @example DidSolProgram::getDidDataAcccountInfo($client, 'did:sol:3Js7k6xYQbvXv6qUYLapYV7Sptfg37Tss9GcAyVEuUqk', false);
      */
-    static function getDidDataAcccountInfo($client, $base58SubjectPk, $onlyAccData = true)
+    static function getDidDataAcccountInfo($client, $base58SubjectPk)
     {
         $pdaPublicKey =  self::getDidDataAccountId($base58SubjectPk);
-
-        $accountInfoResponse = $client->call('getAccountInfo', [$pdaPublicKey, ["encoding" => "jsonParsed"]]);
-        $dataBase64 = $accountInfoResponse['value']['data'][0];
-
-        if (!$onlyAccData) {
-            return $dataBase64;
-        }
-
-
-        $didData = self::deserializeDidData($dataBase64);
-
-        return $didData;
+        return $client->call('getAccountInfo', [$pdaPublicKey, ["encoding" => "jsonParsed"]])['value'];
+        // Data is always returned in base54 because it exceeds 128 bytes
     }
-
 
     /**
      * getDidDataAccountId
@@ -64,7 +52,6 @@ class DidSolProgram extends Program
     {
 
         $b58 = new Base58();
-
         $seeds = array(self::DIDSOL_DEFAULT_SEED, $b58->decode($base58SubjectPk));
         $pId = new PublicKey(self::DIDSOL_PROGRAM_ID);
         $publicKey =  PublicKey::findProgramAddress($seeds, $pId);
@@ -95,4 +82,52 @@ class DidSolProgram extends Program
         $didData->keyData = $base58String;
         return $didData;
     }
+
+
+    public function parse(string $did) : array
+    {
+
+        $did = explode(":", $did);
+        if ($did[0] !== 'did' ||  count($did) < 3) {
+            throw new \Exception('Invalid DID format, use did:sol:[network:]base58SubjectPK');
+        }
+        if ($did[1] !== 'sol') {
+            throw new \Exception('Unsupported DID method, use did:sol:[network:]base58SubjectPK');
+        }
+        if (count($did) == 4) {
+            $network = $did[2];
+            $base58SubjectPK = $did[3];
+        }else if (count($did) == 3) {
+            $network = 'mainnet';
+            $base58SubjectPK = $did[2];
+        }
+
+        $rpcEndpoint = $this->getRpcEndpointFromShortcut($network);
+
+        return [
+            'network' => $network,
+            'base58SubjectPK' => $base58SubjectPK,
+            'dataAccountId' => self::getDidDataAccountId($base58SubjectPK),
+            'rpcEndpoint' => $rpcEndpoint
+        ];
+    }
+
+    private function getRpcEndpointFromShortcut(string $network){
+        switch ($network) {
+            case 'mainnet':
+                $rpcEndpoint = SolanaRpcClient::MAINNET_ENDPOINT;
+                break;
+            case 'devnet':
+                $rpcEndpoint = SolanaRpcClient::DEVNET_ENDPOINT;
+                break;
+            case 'testnet':
+                $rpcEndpoint = SolanaRpcClient::TESTNET_ENDPOINT;
+                break;
+            default:
+                $rpcEndpoint = SolanaRpcClient::MAINNET_ENDPOINT;
+        }
+        return $rpcEndpoint;
+    }
+
+
 }

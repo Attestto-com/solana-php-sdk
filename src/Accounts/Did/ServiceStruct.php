@@ -20,7 +20,7 @@ use Attestto\SolanaPhpSdk\Borsh;
 
 class ServiceStruct
 {
-    use Borsh\BorshDeserializable;
+    use Borsh\BorshObject;
 
     public const SCHEMA = [
         self::class => [

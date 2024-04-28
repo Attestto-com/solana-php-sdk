@@ -12,6 +12,7 @@ class SystemProgram extends Program
 {
     const PROGRAM_INDEX_CREATE_ACCOUNT = 0;
     const PROGRAM_INDEX_TRANSFER = 2;
+    const PROGRAM_ID = '11111111111111111111111111111111';
 
     /**
      * Public key that identifies the System program

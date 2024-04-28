@@ -6,7 +6,7 @@ use Attestto\SolanaPhpSdk\Borsh;
 
 class MetadataData
 {
-    use Borsh\BorshDeserializable;
+    use Borsh\BorshObject;
 
     public const SCHEMA = [
         Creator::class => Creator::SCHEMA[Creator::class],

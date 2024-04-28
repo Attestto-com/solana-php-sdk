@@ -71,13 +71,15 @@ class Borsh
             if (is_int($fieldType[0])) {
                 if (sizeof($value) !== $fieldType[0]) {
                     $sizeOf = sizeof($value);
-                    throw new BorshException("Expecting byte array of length {$fieldType[0]}, but got ${$sizeOf} bytes");
+                    throw new BorshException("Expecting byte array of length {{$fieldType[0]}}, but got {{$sizeOf}} bytes");
+
                 }
                 $writer->writeFixedArray($value);
             } elseif (sizeof($fieldType) === 2 && is_int($fieldType[1])) {
                 if (sizeof($value) !== $fieldType[1]) {
                     $sizeOf = sizeof($value);
-                    throw new BorshException("Expecting byte array of length {$fieldType[1]}, but got ${$sizeOf} bytes");
+                    throw new BorshException("Expecting byte array of length {{$fieldType[1]}}, but got {{$sizeOf}} bytes");
+
                 }
 
                 for ($i = 0; $i < $fieldType[1]; $i++) {
@@ -97,7 +99,7 @@ class Borsh
                     }
                     break;
                 default:
-                    throw new BorshException("FieldType {$fieldType['kind']} unrecognized");
+                    throw new BorshException("FieldType {{$fieldType['kind']}} unrecognized");
             }
         } else {
             static::serializeObject($schema, $value, $writer);
@@ -136,12 +138,13 @@ class Borsh
 
         if ($objectSchema['kind'] === 'struct') {
             if (! method_exists($class, 'borshConstructor')) {
-                throw new BorshException("Class {$class} does not implement borshConstructor. Please use the BorshDeserialize trait.");
+                throw new BorshException("Class {{$class}} does not implement borshConstructor. Please use the BorshDeserialize trait.");
             }
 
             $result = $class::borshConstructor();
             foreach ($objectSchema['fields'] as list($fieldName, $fieldType)) {
                 $result->{$fieldName} = static::deserializeField($schema, $fieldName, $fieldType, $reader);
+                //$result->fields[$fieldName] = static::deserializeField($schema, $fieldName, $fieldType, $reader);
             }
             return $result;
         }

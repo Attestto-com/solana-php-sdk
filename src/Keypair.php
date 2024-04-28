@@ -9,16 +9,16 @@ use Attestto\SolanaPhpSdk\Util\HasSecretKey;
 
 /**
  * An account keypair used for signing transactions.
+ *  @property PublicKey $publicKey The public key for this keypair
+ *  @property PublicKey $secretKey The raw secret key for this keypair
+ *   
  */
 class Keypair implements HasPublicKey, HasSecretKey
 {
-    public Buffer $publicKey;
+    public PublicKey $publicKey;
     public Buffer $secretKey;
 
-    /**
-     * @param array|string $publicKey
-     * @param array|string $secretKey
-     */
+
     public function __construct($publicKey = null, $secretKey = null)
     {
         if ($publicKey == null && $secretKey == null) {
@@ -28,8 +28,10 @@ class Keypair implements HasPublicKey, HasSecretKey
             $secretKey = sodium_crypto_sign_secretkey($keypair);
         }
 
-        $this->publicKey = Buffer::from($publicKey);
-        $this->secretKey = Buffer::from($secretKey);
+        // $this->publicKey = Buffer::from($publicKey);
+        // $this->secretKey = Buffer::from($secretKey);
+        $this->publicKey = new PublicKey($publicKey);
+        $this->secretKey = new Buffer($secretKey);
     }
 
     /**
@@ -66,7 +68,7 @@ class Keypair implements HasPublicKey, HasSecretKey
      * @param $secretKey
      * @return Keypair
      */
-    static public function fromSecretKey($secretKey): Keypair
+    static public function fromSecretKey($secretKey, $skipValidation = null): Keypair
     {
         $secretKey = Buffer::from($secretKey)->toString();
 
@@ -101,7 +103,7 @@ class Keypair implements HasPublicKey, HasSecretKey
      */
     public function getPublicKey(): PublicKey
     {
-        return new PublicKey($this->publicKey);
+        return $this->publicKey;
     }
 
     /**

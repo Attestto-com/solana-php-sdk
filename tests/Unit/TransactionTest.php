@@ -21,8 +21,8 @@ class TransactionTest extends TestCase
      * https://github.com/solana-labs/solana-web3.js/blob/master/test/transaction.test.ts
      * on October 2nd, 2021
      */
-    /** @test */
-    public function it_account_keys_are_ordered()
+    #[Test]
+    public function test_it_account_keys_are_ordered()
     {
         $payer = Keypair::generate();
         $account2 = Keypair::generate();
@@ -44,8 +44,8 @@ class TransactionTest extends TestCase
         $this->assertEquals($account3->getPublicKey(), $message->accountKeys[2]);
     }
 
-    /** @test */
-    public function it_payer_is_first_account_meta()
+    #[Test]
+    public function test_it_payer_is_first_account_meta()
     {
         $payer = Keypair::generate();
         $other = Keypair::generate();
@@ -70,8 +70,8 @@ class TransactionTest extends TestCase
         $this->assertEquals(1, $message->header->numReadonlyUnsignedAccounts);
     }
 
-    /** @test */
-    public function it_payer_is_writable()
+    #[Test]
+    public function test_it_payer_is_writable()
     {
         $payer = Keypair::generate();
         $recentBlockhash = Keypair::generate()->getPublicKey()->toBase58();
@@ -89,8 +89,8 @@ class TransactionTest extends TestCase
         $this->assertEquals(1, $message->header->numReadonlyUnsignedAccounts);
     }
 
-    /** @test */
-    public function it_partialSign()
+    #[Test]
+    public function test_it_partialSign()
     {
         $account1 = Keypair::generate();
         $account2 = Keypair::generate();
@@ -116,8 +116,8 @@ class TransactionTest extends TestCase
         $this->assertEquals($expected, $partialTransaction);
     }
 
-    /** @test */
-    public function it_dedupe_setSigners()
+    #[Test]
+    public function test_it_dedupe_setSigners()
     {
         $payer = Keypair::generate();
         $duplicate1 = $payer;
@@ -151,8 +151,8 @@ class TransactionTest extends TestCase
         $this->assertEquals(1, $message->header->numReadonlyUnsignedAccounts);
     }
 
-    /** @test */
-    public function it_dedupe_sign()
+    #[Test]
+    public function test_it_dedupe_sign()
     {
         $payer = Keypair::generate();
         $duplicate1 = $payer;
@@ -186,8 +186,8 @@ class TransactionTest extends TestCase
         $this->assertEquals(1, $message->header->numReadonlyUnsignedAccounts);
     }
 
-    /** @test */
-    public function it_transfer_signatures()
+    #[Test]
+    public function test_it_transfer_signatures()
     {
         $account1 = Keypair::generate();
         $account2 = Keypair::generate();
@@ -206,19 +206,19 @@ class TransactionTest extends TestCase
         $this->assertEquals($orgTransaction, $newTransaction);
     }
 
-    /** @test */
-    public function it_use_nonce()
+    #[Test]
+    public function test_it_use_nonce()
     {
         $account1 = Keypair::generate();
         $account2 = Keypair::generate();
         $nonceAccount = Keypair::generate();
         $nonce = $account2->getPublicKey()->toBase58(); // Fake Nonce hash
-
+        // TODO
         $this->markTestSkipped('TODO once SystemProgram::nonceAdvance is implemented.');
     }
 
-    /** @test */
-    public function it_parse_wire_format_and_serialize()
+    #[Test]
+    public function test_it_parse_wire_format_and_serialize()
     {
         $sender = Keypair::fromSeed([8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]); // Arbitrary known account
         $recentBlockhash = 'EETubP5AKHgjPAhzPAFcb8BAY1hMH639CWCFTqi3hq1k'; // Arbitrary known recentBlockhash
@@ -236,8 +236,8 @@ class TransactionTest extends TestCase
         $this->assertEquals($wireTransaction, $expectedTransaction->serialize());
     }
 
-    /** @test */
-    public function it_populate_transaction()
+    #[Test]
+    public function test_it_populate_transaction()
     {
         $recentBlockhash = new PublicKey(1);
         $message = new Message(
@@ -266,8 +266,8 @@ class TransactionTest extends TestCase
         $this->assertEquals($recentBlockhash, $transaction->recentBlockhash);
     }
 
-    /** @test */
-    public function it_serialize_unsigned_transaction()
+    #[Test]
+    public function test_it_serialize_unsigned_transaction()
     {
         $sender = Keypair::fromSeed([8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]); // Arbitrary known account
         $recentBlockhash = 'EETubP5AKHgjPAhzPAFcb8BAY1hMH639CWCFTqi3hq1k'; // Arbitrary known recentBlockhash
@@ -307,8 +307,8 @@ class TransactionTest extends TestCase
         $this->assertCount(1, $expectedTransaction->signatures);
     }
 
-    /** @test */
-    public function it_externally_signed_stake_delegate()
+    #[Test]
+    public function test_it_externally_signed_stake_delegate()
     {
 //        $authority = Keypair::fromSeed(array_pad([], 32, 1));
 //        $stake = new PublicKey(2);

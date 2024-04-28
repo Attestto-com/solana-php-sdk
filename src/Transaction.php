@@ -374,7 +374,7 @@ class Transaction
      *
      * All the caveats from the `sign` method apply to `partialSign`
      *
-     * @param array<Signer|Keypair> $signers
+     * @param array<Signer|Keypair> $signers $sgners PUTOs Keypairs!! 
      */
     public function partialSign(...$signers)
     {
@@ -384,7 +384,7 @@ class Transaction
         $this->signatures = array_map(function ($signer) {
             return new SignaturePubkeyPair($this->toPublicKey($signer), null);
         }, $uniqueSigners);
-
+ 
         $message = $this->compileMessage();
         $signData = $message->serialize();
 
@@ -627,18 +627,22 @@ class Transaction
     }
 
     /**
-     * @param $source
+     * @param $base58String
      * @return PublicKey
      * @throws GenericException
      */
-    static protected function toPublicKey($source): PublicKey
+    static protected function toPublicKey($fromKeypair): PublicKey
     {
-        if ($source instanceof HasPublicKey) {
-            return $source->getPublicKey();
-        } elseif (is_string($source)) {
-            return new PublicKey($source);
+        //dd($base58String);
+        if ($fromKeypair instanceof HasPublicKey) {
+            
+            return $fromKeypair->getPublicKey();
+        } elseif (is_string($fromKeypair)) {
+
+            return new PublicKey($fromKeypair);
         } else {
-            throw new InputValidationException('Unsupported input: ' . get_class($source));
+            dd($fromKeypair);
+            throw new InputValidationException('Unsupported input: ' . get_class($fromKeypair));
         }
     }
 
