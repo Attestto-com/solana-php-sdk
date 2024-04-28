@@ -23,23 +23,23 @@ class PublicKey implements HasPublicKey
     /**
      * @param array|string $bn
      */
-    public function __construct($bn)
+    public function __construct($bnORBase58String)
     {
-        if (is_integer($bn)) {
-            $this->buffer = Buffer::from()->pad(self::LENGTH, $bn);
-        } elseif (is_string($bn)) {
+        if (is_integer($bnORBase58String)) {
+            $this->buffer = Buffer::from()->pad(self::LENGTH, $bnORBase58String);
+        } elseif (is_string($bnORBase58String)) {
             // https://stackoverflow.com/questions/25343508/detect-if-string-is-binary
-            $isBinaryString = preg_match('~[^\x20-\x7E\t\r\n]~', $bn) > 0;
+            $isBinaryString = preg_match('~[^\x20-\x7E\t\r\n]~', $bnORBase58String) > 0;
 
             // if not binary string already, assumed to be a base58 string.
             if ($isBinaryString) {
-                $this->buffer = Buffer::from($bn);
+                $this->buffer = Buffer::from($bnORBase58String);
             } else {
-                $this->buffer = Buffer::fromBase58($bn);
+                $this->buffer = Buffer::fromBase58($bnORBase58String);
             }
 
         } else {
-            $this->buffer = Buffer::from($bn);
+            $this->buffer = Buffer::from($bnORBase58String);
         }
 
         if (sizeof($this->buffer) !== self::LENGTH) {
@@ -180,6 +180,17 @@ class PublicKey implements HasPublicKey
         }
 
         throw new BaseSolanaPhpSdkException('Unable to find a viable program address nonce.');
+    }
+
+    /**
+     * 
+     * @param array $seeds
+     * @param PublicKey $programId
+     * @return array 2 elements, [0] = PublicKey, [1] = integer
+     */
+    static function findProgramAddressSync(array $seeds, PublicKey $programId): array
+    {
+        return static::findProgramAddress($seeds, $programId);
     }
 
     /**

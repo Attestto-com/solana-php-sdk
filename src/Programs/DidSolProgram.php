@@ -37,7 +37,7 @@ class DidSolProgram extends Program
     static function getDidDataAcccountInfo($client, $base58SubjectPk)
     {
         $pdaPublicKey =  self::getDidDataAccountId($base58SubjectPk);
-        return $client->call('getAccountInfo', [$pdaPublicKey, ["encoding" => "jsonParsed"]]);
+        return $client->call('getAccountInfo', [$pdaPublicKey, ["encoding" => "jsonParsed"]])['value'];
         // Data is always returned in base54 because it exceeds 128 bytes
     }
 

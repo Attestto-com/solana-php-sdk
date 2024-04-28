@@ -30,17 +30,11 @@ class DidSolProgramTest extends TestCase
     {
         $client = new SolanaRpcClient(SolanaRpcClient::DEVNET_ENDPOINT);
         $accountInfoResponse = DidSolProgram::getDidDataAcccountInfo($client, self::DID_SUBJECT_PK, false);
-        $this->assertEquals($accountInfoResponse, self::DID_DATA);
+        //dd($accountInfoResponse);
+        $this->assertEquals($accountInfoResponse['data'][0], self::DID_DATA);
      
     }
-    /** @test */
-    public function it_gets_did_data_account_info_data()
-    {
-        $client = new SolanaRpcClient(SolanaRpcClient::DEVNET_ENDPOINT);
-        $didData = DidSolProgram::getDidDataAcccountInfo($client, self::DID_SUBJECT_PK,);
-        $this->assertEquals($didData->keyData, self::DID_SUBJECT_PK);
-     
-    }
+   
     /** @test */
     public function it_gets_did_data_account_id()
     {

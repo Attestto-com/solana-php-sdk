@@ -1,5 +1,4 @@
 <?php
-
 namespace Attestto\SolanaPhpSdk\Borsh;
 
 trait BorshDeserializable
@@ -17,11 +16,41 @@ trait BorshDeserializable
     }
 
     /**
-     * @param $name
-     * @param $value
+     * @var array Holds dynamic properties
      */
-    public function __set($name, $value)
+    protected $fields = [];
+
+    /**
+     * Magic setter to dynamically set properties.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function __set(string $name, mixed $value)
     {
-        $this->{$name} = $value;
+        $this->fields[$name] = $value;
+    }
+
+
+    /**
+     * Magic isset to check if dynamically set property is set.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function __isset(string $name)
+    {
+        return isset($this->fields[$name]);
+    }
+
+    /**
+     * Magic unset to unset dynamically set property.
+     *
+     * @param string $name
+     */
+    public function __unset(string $name)
+    {
+        unset($this->fields[$name]);
     }
 }

@@ -8,8 +8,16 @@ trait BorshSerializable
      * @param $name
      * @return mixed
      */
-    public function __get($name)
+
+    /**
+     * Magic getter to retrieve dynamically set properties.
+     * Note, changed from dynamic properties to jeys of an Array due to Dynamic properties being deprecated.
+     * @param string $name
+     *
+     * @return mixed|null
+     */
+    public function __get(string $name)
     {
-        return $this->{$name};
+        return $this->fields[$name];
     }
 }

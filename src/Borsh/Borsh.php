@@ -141,7 +141,8 @@ class Borsh
 
             $result = $class::borshConstructor();
             foreach ($objectSchema['fields'] as list($fieldName, $fieldType)) {
-                $result->{$fieldName} = static::deserializeField($schema, $fieldName, $fieldType, $reader);
+                //$result->{$fieldName} = static::deserializeField($schema, $fieldName, $fieldType, $reader);
+                $result->fields[$fieldName] = static::deserializeField($schema, $fieldName, $fieldType, $reader);
             }
             return $result;
         }

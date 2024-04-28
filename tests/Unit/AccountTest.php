@@ -13,7 +13,7 @@ class AccountTest extends TestCase
     {
         $account = new Account();
 
-        $this->assertEquals(64, sizeof($account->getSecretKey()));
+        $this->assertEquals(64, count($account->getSecretKey()));
     }
 
     /** @test */
