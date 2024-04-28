@@ -8,8 +8,8 @@ use Attestto\SolanaPhpSdk\Tests\TestCase;
 
 class PublicKeyTest extends TestCase
 {
-    /** @test */
-    public function it_correctly_encodes_string_to_buffer()
+    #[Test]
+    public function test_it_correctly_encodes_string_to_buffer()
     {
         $publicKey = new PublicKey('2ZC8EZduQGavJB9duMUgpdjNj7TQUiMawb52CLXBH5yc');
 
@@ -20,8 +20,8 @@ class PublicKeyTest extends TestCase
         $this->assertEquals('2ZC8EZduQGavJB9duMUgpdjNj7TQUiMawb52CLXBH5yc', $publicKey->toBase58());
     }
 
-    /** @test */
-    public function it_correctly_evaluates_equality()
+    #[Test]
+    public function test_it_correctly_evaluates_equality()
     {
         $publicKey1 = new PublicKey('2ZC8EZduQGavJB9duMUgpdjNj7TQUiMawb52CLXBH5yc');
         $publicKey2 = new PublicKey('2ZC8EZduQGavJB9duMUgpdjNj7TQUiMawb52CLXBH5yc');
@@ -29,8 +29,8 @@ class PublicKeyTest extends TestCase
         $this->assertEquals($publicKey1, $publicKey2);
     }
 
-    /** @test */
-    public function it_correctly_handles_public_key_in_constructor()
+    #[Test]
+    public function test_it_correctly_handles_public_key_in_constructor()
     {
         $publicKey1 = new PublicKey('2ZC8EZduQGavJB9duMUgpdjNj7TQUiMawb52CLXBH5yc');
         $publicKey2 = new PublicKey($publicKey1);
@@ -38,8 +38,8 @@ class PublicKeyTest extends TestCase
         $this->assertEquals($publicKey1, $publicKey2);
     }
 
-    /** @test */
-    public function it_equals()
+    #[Test]
+    public function test_it_equals()
     {
         $arrayKey = new PublicKey([3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]);
 
@@ -48,8 +48,8 @@ class PublicKeyTest extends TestCase
         $this->assertEquals($base58Key, $arrayKey);
     }
 
-    /** @test */
-    public function it_toBase58()
+    #[Test]
+    public function test_it_toBase58()
     {
         $key1 = new PublicKey('CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3');
         $this->assertEquals('CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3', $key1->toBase58());
@@ -66,8 +66,8 @@ class PublicKeyTest extends TestCase
         $this->assertEquals('11111111111111111111111111111111', $key4->toBase58());
     }
 
-    /** @test */
-    public function it_createWithSeed()
+    #[Test]
+    public function test_it_createWithSeed()
     {
         $defaultPublicKey = new PublicKey('11111111111111111111111111111111');
         $derivedKey = PublicKey::createWithSeed($defaultPublicKey, 'limber chicken: 4/45', $defaultPublicKey);
@@ -75,8 +75,8 @@ class PublicKeyTest extends TestCase
         $this->assertEquals(new PublicKey('9h1HyLCW5dZnBVap8C5egQ9Z6pHyjsh5MNy83iPqqRuq'), $derivedKey);
     }
 
-    /** @test */
-    public function it_createProgramAddress()
+    #[Test]
+    public function test_it_createProgramAddress()
     {
         $programId = new PublicKey('BPFLoader1111111111111111111111111111111111');
         $publicKey = new PublicKey('SeedPubey1111111111111111111111111111111111');
@@ -104,8 +104,8 @@ class PublicKeyTest extends TestCase
         $this->assertEquals(new PublicKey('GUs5qLUfsEHkcMB9T38vjr18ypEhRuNWiePW2LoK4E3K'), $programAddress);
     }
 
-    /** @test */
-    public function it_findProgramAddress()
+    #[Test]
+    public function test_it_findProgramAddress()
     {
         $programId = new PublicKey('BPFLoader1111111111111111111111111111111111');
 
@@ -123,8 +123,8 @@ class PublicKeyTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it_isOnCurve()
+    #[Test]
+    public function test_it_isOnCurve()
     {
         $onCurvePublicKey = Keypair::generate()->getPublicKey();
         $this->assertTrue(PublicKey::isOnCurve($onCurvePublicKey));

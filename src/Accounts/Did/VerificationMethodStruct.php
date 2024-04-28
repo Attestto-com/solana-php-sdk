@@ -19,7 +19,7 @@ use Attestto\SolanaPhpSdk\Borsh;
  */
 class VerificationMethodStruct
 {
-    use Borsh\BorshDeserializable;
+    use Borsh\BorshObject;
 
     public const SCHEMA = [
         self::class => [

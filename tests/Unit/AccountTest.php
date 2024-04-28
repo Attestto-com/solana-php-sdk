@@ -8,16 +8,16 @@ use Attestto\SolanaPhpSdk\Tests\TestCase;
 
 class AccountTest extends TestCase
 {
-    /** @test */
-    public function it_generate_new_account()
+    #[Test]
+    public function test_it_generate_new_account()
     {
         $account = new Account();
 
         $this->assertEquals(64, count($account->getSecretKey()));
     }
 
-    /** @test */
-    public function it_account_from_secret_key()
+    #[Test]
+    public function test_it_account_from_secret_key()
     {
         $secretKey = [
             153, 218, 149, 89, 225, 94, 145, 62, 233, 171, 46, 83, 227, 223, 173, 87,
@@ -31,8 +31,8 @@ class AccountTest extends TestCase
         $this->assertEquals('2q7pyhPwAwZ3QMfZrnAbDhnh9mDUqycszcpf86VgQxhF', $account->getPublicKey()->toBase58());
     }
 
-    /** @test */
-    public function it_account_keypair()
+    #[Test]
+    public function test_it_account_keypair()
     {
         $expectedAccount = new Account();
         $keypair = Keypair::fromSecretKey($expectedAccount->getSecretKey());

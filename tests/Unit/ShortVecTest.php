@@ -7,8 +7,8 @@ use Attestto\SolanaPhpSdk\Util\ShortVec;
 
 class ShortVecTest extends TestCase
 {
-    /** @test */
-    public function it_decodeLength()
+    #[Test]
+    public function test_it_decodeLength()
     {
         $this->checkDecodedArray([], 0, 0);
         $this->checkDecodedArray([5], 1, 5);
@@ -21,8 +21,8 @@ class ShortVecTest extends TestCase
         $this->checkDecodedArray([0x80, 0x80, 0x80, 0x01], 4, 0x200000);
     }
 
-    /** @test */
-    public function it_encodeLength()
+    #[Test]
+    public function test_it_encodeLength()
     {
         $array = [];
         $prevLength = 0;

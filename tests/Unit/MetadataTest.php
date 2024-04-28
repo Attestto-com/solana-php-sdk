@@ -9,8 +9,8 @@ use Attestto\SolanaPhpSdk\Accounts\Metadata;
 
 class MetadataTest extends TestCase
 {
-    /** @test */
-    public function it_deserializes_metadata()
+    #[Test]
+    public function test_it_deserializes_metadata()
     {
         $metadata = Metadata::fromBuffer($this->getBuffer());
 

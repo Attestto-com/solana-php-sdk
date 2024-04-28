@@ -11,8 +11,8 @@ use Attestto\SolanaPhpSdk\Util\Buffer;
 
 class BufferTest extends TestCase
 {
-    /** @test */
-    public function it_buffer_push_fixed_length()
+    #[Test]
+    public function test_it_buffer_push_fixed_length()
     {
         $lamports = 4;
         $space = 6;

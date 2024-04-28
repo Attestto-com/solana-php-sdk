@@ -14,8 +14,8 @@ class KeypairTest extends TestCase
      * on Oct 2, 2021
      */
 
-    /** @test */
-    public function it_new_keypair()
+    #[Test]
+    public function test_it_new_keypair()
     {
         $keypair = new Keypair();
 
@@ -23,8 +23,8 @@ class KeypairTest extends TestCase
         $this->assertEquals(32, sizeof($keypair->getPublicKey()->toBytes()));
     }
 
-    /** @test */
-    public function it_generate_new_keypair()
+    #[Test]
+    public function test_it_generate_new_keypair()
     {
         $keypair = Keypair::generate();
 
@@ -32,8 +32,8 @@ class KeypairTest extends TestCase
         $this->assertEquals(32, sizeof($keypair->getPublicKey()->toBytes()));
     }
 
-    /** @test */
-    public function it_keypair_from_secret_key()
+    #[Test]
+    public function test_it_keypair_from_secret_key()
     {
         $secretKey = sodium_base642bin('mdqVWeFekT7pqy5T49+tV12jO0m+ESW7ki4zSU9JiCgbL0kJbj5dvQ/PqcDAzZLZqzshVEs01d1KZdmLh4uZIg==', SODIUM_BASE64_VARIANT_ORIGINAL);
 
@@ -42,8 +42,8 @@ class KeypairTest extends TestCase
         $this->assertEquals('2q7pyhPwAwZ3QMfZrnAbDhnh9mDUqycszcpf86VgQxhF', $keypair->getPublicKey()->toBase58());
     }
 
-    /** @test */
-    public function it_generate_keypair_from_seed()
+    #[Test]
+    public function test_it_generate_keypair_from_seed()
     {
         $byteArray = array_fill(0, 32, 8);
 
@@ -54,8 +54,8 @@ class KeypairTest extends TestCase
         $this->assertEquals('2KW2XRd9kwqet15Aha2oK3tYvd3nWbTFH1MBiRAv1BE1', $keypair->getPublicKey()->toBase58());
     }
 
-    /** @test */
-    public function it_bin2array_and_array2bin_are_equivalent()
+    #[Test]
+    public function test_it_bin2array_and_array2bin_are_equivalent()
     {
         $keypair = sodium_crypto_sign_keypair();
         $publicKey = sodium_crypto_sign_publickey($keypair);

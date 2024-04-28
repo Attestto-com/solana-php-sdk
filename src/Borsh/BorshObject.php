@@ -10,5 +10,7 @@ trait BorshObject
     /**
      * @var array Holds dynamic properties
      */
-    protected $fields = [];
+    public $fields = [];
+
+
 }

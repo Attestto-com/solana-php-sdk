@@ -15,8 +15,8 @@ use Attestto\SolanaPhpSdk\Util\Buffer;
 
 class TransactionInstructionTest extends TestCase
 {
-    /** @test */
-    public function it_creates_transaction_instruction_with_program_id_and_keys()
+    #[Test]
+    public function test_it_creates_transaction_instruction_with_program_id_and_keys()
     {
         $programId = new PublicKey('3Wnd5Df69KitZfUoPYZU438eFRNwGHkhLnSAWL65PxJX');
         $pk2 = new PublicKey('3Js7k6xYQbvXv6qUYLapYV7Sptfg37Tss9GcAyVEuUqk');
@@ -33,8 +33,8 @@ class TransactionInstructionTest extends TestCase
         $this->assertEquals($data, $instruction->data->toString());
     }
 
-    /** @test */
-    public function it_creates_transaction_instruction_with_program_id_and_keys_without_data()
+    #[Test]
+    public function test_it_creates_transaction_instruction_with_program_id_and_keys_without_data()
     {
         $programId = new PublicKey('3Wnd5Df69KitZfUoPYZU438eFRNwGHkhLnSAWL65PxJX');
         $pk2 = new PublicKey('3Js7k6xYQbvXv6qUYLapYV7Sptfg37Tss9GcAyVEuUqk');
