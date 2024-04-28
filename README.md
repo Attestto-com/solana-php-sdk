@@ -1,6 +1,6 @@
 # Solana PHP SDK
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/attestto-com/solana-php-sdk.svg?style=flat-square)](https://packagist.org/packages/attestto-com/solana-php-sdk)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/attestto/solana-php-sdk.svg?style=flat-square)](https://packagist.org/packages/attestto/solana-php-sdk)
 [![GitHub Tests Action Status](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml)
 [![Coverage (CodeCov)](https://codecov.io/github/Attestto-com/solana-php-sdk/graph/badge.svg?token=M12LECZ9QE)](https://codecov.io/github/Attestto-com/solana-php-sdk)
 ---
