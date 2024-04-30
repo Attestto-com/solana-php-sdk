@@ -2,16 +2,12 @@
 
 namespace Attestto\SolanaPhpSdk;
 
-use GuzzleHttp\Handler\StreamHandler;
 use GuzzleHttp\Psr7\Message;
-use GuzzleHttp\Psr7\Uri;
 
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\HttpFactory;
 
 
@@ -19,7 +15,6 @@ use Attestto\SolanaPhpSdk\Exceptions\GenericException;
 use Attestto\SolanaPhpSdk\Exceptions\InvalidIdResponseException;
 use Attestto\SolanaPhpSdk\Exceptions\MethodNotFoundException;
 use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use Random\RandomException;
 
@@ -54,10 +49,10 @@ class SolanaRpcClient
     protected string $endpoint;
     protected int $randomKey;
     // Allows for dependency injection
-    protected ClientInterface $httpClient;
-    protected RequestFactoryInterface $requestFactory;
-    protected StreamFactoryInterface $streamFactory;
-    protected UriFactoryInterface $uriFactory;
+    public ClientInterface $httpClient;
+    public RequestFactoryInterface $requestFactory;
+    public StreamFactoryInterface $streamFactory;
+    public UriFactoryInterface $uriFactory;
 
     /**
      * @param string $endpoint
@@ -78,8 +73,7 @@ class SolanaRpcClient
         $this->randomKey = random_int(0, 99999999);
         $this->httpClient = $httpClient?: new GuzzleClient();
         $this->requestFactory = $requestFactory?: new HttpFactory();
-      // $this->streamFactory = $streamFactory;
-      //  $this->uriFactory = $uriFactory?: new Uri();
+
     }
 
     /**
@@ -95,21 +89,25 @@ class SolanaRpcClient
     {
 
         $body = json_encode($this->buildRpc($method, $params));
-        $request = $this->requestFactory->createRequest('POST', $this->endpoint)
-            ->withHeader('Content-Type', 'application/json')
-            ->withHeader('Accept', 'application/json');
-            //->withBody($this->streamFactory->createStream($body));
+//        $request = $this->requestFactory->createRequest('POST', $this->endpoint)
+//            ->withHeader('Content-Type', 'application/json')
+//            ->withHeader('Accept', 'application/json');
+//            //->withBody($this->streamFactory->createStream($body));
 
         $response = $this->httpClient->request('POST', $this->endpoint, ['body' => $body]);
 
 
+        $resp_body = $response->getBody()->getContents();
+        $resp_object = json_decode($resp_body, true);
 
-
-        $this->validateResponse($response, $method);
+        $this->validateResponse($resp_object, $method);
 
         // Decode JSON response body and return result
-        $json = json_decode($response->getBody()->getContents(), true);
-        return $json['result'] ?? null;
+
+
+        // Decode JSON response body
+
+        return $resp_object['params']['result'] ?? null;
     }
     /**
      * @param string $method
@@ -133,24 +131,24 @@ class SolanaRpcClient
      * @throws InvalidIdResponseException
      * @throws MethodNotFoundException
      */
-    protected function validateResponse(mixed $response, string $method): void
+    protected function validateResponse(array $body, string $method): void
     {
 
         // Get response body as string
-        $body = $response->getBody()->getContents();
+        //$body = $response->getBody()->getContents();
 
         // Decode JSON response body
-        $json = json_decode($body, true);
+        //$resp = json_decode($body, true);
 
 
 
-        if ($json === null) {
+        if ($body == null) {
             throw new GenericException('Invalid JSON response');
         }
 
         // If response contains an 'error' key, handle it
-        if (isset($json['error'])) {
-            $error = $json['error'];
+        if (isset($body['params']['error']) || isset($body['error'])) {
+            $error = $body['params']['error']? : $body['error'];
             if ($error['code'] === self::ERROR_CODE_METHOD_NOT_FOUND) {
                 throw new MethodNotFoundException("API Error: Method $method not found.");
             } else {
@@ -159,7 +157,7 @@ class SolanaRpcClient
         }
 
         // If 'id' doesn't match the expected value, throw an exception
-        if ($json['id'] !== $this->randomKey) {
+        if ($body['id'] !== $this->randomKey) {
             throw new InvalidIdResponseException($this->randomKey);
         }
 

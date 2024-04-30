@@ -4,26 +4,20 @@ namespace Attestto\SolanaPhpSdk\Tests\Unit;
 
 use Attestto\SolanaPhpSdk\Connection;
 use Attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
-
 use Attestto\SolanaPhpSdk\Exceptions\GenericException;
-use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
-use Attestto\SolanaPhpSdk\Exceptions\InvalidIdResponseException;
-use Attestto\SolanaPhpSdk\Exceptions\MethodNotFoundException;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
 use Attestto\SolanaPhpSdk\Transaction;
 use Attestto\SolanaPhpSdk\KeyPair;
-use Attestto\SolanaPhpSdk\PublicKey;
-use Attestto\SolanaPhpSdk\TransactionInstruction;
-use Attestto\SolanaPhpSdk\Util\AccountMeta;
-use Attestto\SolanaPhpSdk\Util\Buffer;
 use Attestto\SolanaPhpSdk\Programs\SystemProgram;
+use PHPUnit\Framework\MockObject\Exception;
+use SodiumException;
 
 
 class ConnectionTest extends TestCase
 {
     /**
-     * @throws AccountNotFoundException
+     * @throws AccountNotFoundException|Exception
      */
     public function testGetAccountInfo()
     {
@@ -42,6 +36,9 @@ class ConnectionTest extends TestCase
         $this->assertEquals($accountInfo, $result);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetAccountInfoThrowsException()
     {
         $pubKey = 'your_public_key_here';
@@ -55,14 +52,14 @@ class ConnectionTest extends TestCase
         $connection = new Connection($clientMock);
      
         $this->expectException(AccountNotFoundException::class);
-        $this->expectExceptionMessage("API Error: Account {$pubKey} not found.");
+        $this->expectExceptionMessage("API Error: Account $pubKey not found.");
         $connection->getAccountInfo($pubKey);
       
     }
 
     /**
      * @throws GenericException
-     * @throws \SodiumException
+     * @throws SodiumException
      */
     public function testSimulateTransaction()
     {

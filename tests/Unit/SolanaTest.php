@@ -23,27 +23,11 @@ class SolanaTest extends TestCase
     public function it_will_throw_exception_when_rpc_account_response_is_null()
     {
 
+        $client = $this->assembleClient('POST', []);
 
-        $mockHandler = new MockHandler([
-            new Response(
-                200,
-                [],
-                json_encode([
-                    'jsonrpc' => '2.0',
-                    'result' => [
-                        'context' =>  [
-                            'slot' => 6440,
-                        ],
-                        'value' => null, // no account data.
-                    ],
-                    'id' => 1, // Set response ID different from the random key
-                ])
-            ),
-        ]);
-        $client = $this->assembleClient($mockHandler);
         $solana = new SystemProgram($client);
 
-        $this->expectException(GenericException::class);
+        $this->expectException(AccountNotFoundException::class);
         $solana->getAccountInfo('abc123');
     }
 }

@@ -13,11 +13,35 @@ Simple PHP SDK for Solana.
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via composer :
 
 ```bash
 composer require attestto/solana-php-sdk
 ```
+### From this Repository
+
+```bash
+git clone https://github.com/Attestto-com/solana-php-sdk.git
+
+cd solana-php-sdk
+
+composer install 
+
+```
+### With Docker
+
+- [DockerFile](https://github.com/Attestto-com/solana-php-sdk/blob/master/Dockerfile) 
+- [compose-dev.yaml](https://github.com/Attestto-com/solana-php-sdk/blob/master/compose-dev.yaml)
+
+```bash
+docker build -t solana-php-sdk .
+```
+then 
+
+```bash
+docker run -it solana-php-sdk /bin/bash
+```
+
 
 ## Usage
 
@@ -153,20 +177,27 @@ example usage _**(This will be improved, WIP)**_:
 
 ## Roadmap (WIP)
 
-1. Borsh serialize and deserialize.
-2. Improved documentation.
-3. Build out more of the Connection, SystemProgram, TokenProgram, MetaplexProgram classes.
-4. Improve abstractions around working with binary data.
+1. Borsh serialize and deserialize. [Done](https://github.com/Attestto-com/solana-php-sdk/tree/master/src/Borsh) - [Test(s)](https://github.com/Attestto-com/solana-php-sdk/blob/master/tests/Unit/BorshTest.php) - [Coverage](https://app.codecov.io/github/Attestto-com/solana-php-sdk/tree/master/src%2FBorsh)
+2. Improved documentation. [WIP](#) - This document + [Documentation Index](https://github.com/Attestto-com/solana-php-sdk/tree/master/docs) (https://github.com/Attestto-com/solana-php-sdk/tree/master/docs)
+3. Build out more of the Connection, SystemProgram, TokenProgram, MetaplexProgram classes. [WIP](https://github.com/Attestto-com/solana-php-sdk/tree/master/src) - [Tests](https://github.com/Attestto-com/solana-php-sdk/tree/master/tests/Unit) - [Coverage](https://app.codecov.io/github/Attestto-com/solana-php-sdk/tree/master/src)
+4. Improve abstractions around working with binary data. [Done?](https://github.com/Attestto-com/solana-php-sdk/tree/master/src/Borsh) - [Test(s)](https://github.com/Attestto-com/solana-php-sdk/blob/master/tests/Unit/BorshTest.php) - [Coverage](https://app.codecov.io/github/Attestto-com/solana-php-sdk/tree/master/src%2FBorsh)
 5. Optimizations:
    1. Leverage PHP more.
-   2. Better cache `$recentBlockhash` when sending transactions.
-6. Suggestions? Open an issue or PR :D
+   2. Better cache `$recentBlockhash` when sending transactions. 
+6. Suggestions? Open an [Issue](https://github.com/Attestto-com/solana-php-sdk/issues) or [Pull Request](https://github.com/Attestto-com/solana-php-sdk/pulls) :D
 
 ## Testing & Code Coverage
 
 WIP -- Working on coverage and deprecations. See [Coverage Report](https://app.codecov.io/github/Attestto-com/solana-php-sdk).
 
-
+- Configuration [phpunit.xml](https://github.com/Attestto-com/solana-php-sdk/blob/master/phpUnit.xml)
+- composer.json
+```json
+   "scripts": {
+        "test": "vendor/bin/phpunit tests --coverage-clover=coverage.xml --coverage-filter src/",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risk=yes"
+    },
+```
 [![GitHub Tests Action Status](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml)
 [![Coverage (CodeCov)](https://codecov.io/github/Attestto-com/solana-php-sdk/graph/badge.svg?token=M12LECZ9QE)](https://codecov.io/github/Attestto-com/solana-php-sdk)
 
@@ -174,10 +205,17 @@ WIP -- Working on coverage and deprecations. See [Coverage Report](https://app.c
 ```bash
 composer test
 ```
+OR
 
-## Contributing
+```bash
+/verdor/bin/phpunit tests [options]
+```
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+## Contributing - Yes Please! :-P
+
+- Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+- I will change my profile pic once we get a 2nd mantainer onboard :-)
+
 
 ## Security
 
