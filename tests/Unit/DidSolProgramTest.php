@@ -7,6 +7,7 @@ use Attestto\SolanaPhpSdk\Keypair;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
 use Attestto\SolanaPhpSdk\Programs\DidSolProgram;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
+use PHPUnit\Framework\Attributes\Test;
 
 class DidSolProgramTest extends TestCase
 {

@@ -7,24 +7,20 @@ use Attestto\SolanaPhpSdk\Exceptions\InvalidIdResponseException;
 use Attestto\SolanaPhpSdk\Exceptions\MethodNotFoundException;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
-
-use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;
-use GuzzleHttp\Exception\ClientException;
-use Illuminate\Support\Facades\Facade;
 use Psr\Http\Client\ClientExceptionInterface;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\UriFactoryInterface;
+use Random\RandomException;
 
 class SolanaRpcClientTest extends TestCase
 {
+    /**
+     * @throws RandomException
+     * @throws Exception
+     */
     #[Test]
     public function test_it_generates_random_key()
     {
@@ -42,42 +38,13 @@ class SolanaRpcClientTest extends TestCase
                 ])
             ),
         ]);
-        // Create handler stack and attach mock handler
-        $handlerStack = HandlerStack::create($mockHandler);
 
-        // Create Guzzle HTTP client with handler stack
-        $guzzleClient = new GuzzleClient(['handler' => $handlerStack]);
-
-
-        // Mock the request, stream, and URI factories
-        $requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $streamFactory = $this->createMock(StreamFactoryInterface::class);
-        $uriFactory = $this->createMock(UriFactoryInterface::class);
-
-        // Configure the request factory mock to return a request object
-        // Configure the request factory mock to return a real instance of RequestInterface
-        $request = $this->createMock(RequestInterface::class);
-        $requestFactory->method('createRequest')->willReturn($request);
-        // Create an instance of SolanaRpcClient with the mocked dependencies
-        $client = new SolanaRpcClient(
-            SolanaRpcClient::DEVNET_ENDPOINT,
-            $guzzleClient,
-            $requestFactory,
-            $streamFactory,
-            $uriFactory
-        );
-
+        $client = $this->assembleClient($mockHandler);
 
         $rpc1 = $client->buildRpc('doStuff', []);
         $rpc2 = $client->buildRpc('doStuff', []);
 
-        $client = new SolanaRpcClient(
-            SolanaRpcClient::DEVNET_ENDPOINT,
-            $guzzleClient,
-            $requestFactory,
-            $streamFactory,
-            $uriFactory
-        );
+        $client = $this->assembleClient($mockHandler);
 
         $rpc3= $client->buildRpc('doStuff', []);
         $rpc4 = $client->buildRpc('doStuff', []);
@@ -110,26 +77,7 @@ class SolanaRpcClientTest extends TestCase
                 ])
             ),
         ]);
-
-        // Create handler stack and attach mock handler
-        $handlerStack = HandlerStack::create($mockHandler);
-
-        // Create Guzzle HTTP client with handler stack
-        $guzzleClient = new GuzzleClient(['handler' => $handlerStack]);
-
-        // Mock the request, stream, and URI factories
-        $requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $streamFactory = $this->createMock(StreamFactoryInterface::class);
-        $uriFactory = $this->createMock(UriFactoryInterface::class);
-
-        // Create an instance of SolanaRpcClient with the mocked dependencies
-        $client = new SolanaRpcClient(
-            SolanaRpcClient::DEVNET_ENDPOINT,
-            $guzzleClient,
-            $requestFactory,
-            $streamFactory,
-            $uriFactory
-        );
+        $client = $this->assembleClient($mockHandler);
 
         // Assert that the correct exception is thrown when the response ID is invalid
         $this->expectException(InvalidIdResponseException::class);
@@ -165,31 +113,7 @@ class SolanaRpcClientTest extends TestCase
             ),
         ]);
 
-        // Create handler stack and attach mock handler
-        $handlerStack = HandlerStack::create($mockHandler);
-
-        // Create Guzzle HTTP client with handler stack
-        $guzzleClient = new GuzzleClient([
-            'handler' => $handlerStack,
-        ]);
-
-        // Mock the request, stream, and URI factories
-        $requestFactory = $this->createMock(RequestFactoryInterface::class);
-        $streamFactory = $this->createMock(StreamFactoryInterface::class);
-        $uriFactory = $this->createMock(UriFactoryInterface::class);
-
-        // Configure the request factory mock to return a request object
-        // Configure the request factory mock to return a real instance of RequestInterface
-        $request = $this->createMock(RequestInterface::class);
-        $requestFactory->method('createRequest')->willReturn($request);
-        // Create an instance of SolanaRpcClient with the mocked dependencies
-        $client = new SolanaRpcClient(
-            SolanaRpcClient::DEVNET_ENDPOINT,
-            $guzzleClient,
-            $requestFactory,
-            $streamFactory,
-            $uriFactory
-        );
+        $client = $this->assembleClient($mockHandler);
 
         // Assert that the correct exception is thrown for an invalid method
         $this->expectException(MethodNotFoundException::class);

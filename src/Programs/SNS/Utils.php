@@ -2,6 +2,7 @@
 
 namespace Attestto\SolanaPhpSdk\Programs\SNS;
 
+use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\Connection;
 use Attestto\SolanaPhpSdk\Exceptions\GenericException;
@@ -13,7 +14,8 @@ class Utils
 {
 
     // config.json file should be in the same directory as this file
-    public $config;
+    public mixed $config;
+    public $centralStateSNSRecords;
     
 
     // Constructor
@@ -25,7 +27,7 @@ class Utils
             $this->config = $this->loadConstants();
         }
         $sns_records_id = new PublicKey($this->config['BONFIDA_SNS_RECORDS_ID']);
-        //dd($sns_records_id);
+
         $this->centralStateSNSRecords = PublicKey::findProgramAddressSync(
             [$sns_records_id],
              $sns_records_id);
@@ -47,11 +49,12 @@ class Utils
     }
 
     /**
-     * @deprecated Use {@link getNameAccountKeySync} instead
-     * @param string $hashedName The hashed name buffer
+     * @param Buffer $hashed_name
      * @param PublicKey|null $nameClass The name class public key
      * @param PublicKey|null $nameParent The name parent public key
      * @return PublicKey The public key of the name account
+     * @throws InputValidationException
+     * @deprecated Use {@link getNameAccountKeySync} instead
      */
     public function getNameAccountKeySync(
         Buffer $hashed_name,

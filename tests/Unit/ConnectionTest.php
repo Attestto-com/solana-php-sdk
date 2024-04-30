@@ -61,9 +61,6 @@ class ConnectionTest extends TestCase
     }
 
     /**
-     * @throws MethodNotFoundException
-     * @throws InvalidIdResponseException
-     * @throws InputValidationException
      * @throws GenericException
      * @throws \SodiumException
      */

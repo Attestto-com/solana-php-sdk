@@ -13,6 +13,7 @@ use Attestto\SolanaPhpSdk\Util\AccountMeta;
 use Attestto\SolanaPhpSdk\Util\Buffer;
 use Attestto\SolanaPhpSdk\Util\CompiledInstruction;
 use Attestto\SolanaPhpSdk\Util\MessageHeader;
+use PHPUnit\Framework\Attributes\Test;
 
 class TransactionTest extends TestCase
 {

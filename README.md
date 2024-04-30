@@ -5,7 +5,7 @@
 [![Coverage (CodeCov)](https://codecov.io/github/Attestto-com/solana-php-sdk/graph/badge.svg?token=M12LECZ9QE)](https://codecov.io/github/Attestto-com/solana-php-sdk)
 ---
 
-:notice: Forked from:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk)
+## notice: Forked from the abandoned repo:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk)
 
 ---
 
@@ -79,8 +79,8 @@ For Borsh serialization/deseralization to work, a class::SCHEMA object reflectin
 class DidData
 {
 
-    use BorshDeserializable;
-
+    use BorshObject; //trait
+    public $keyData;
 
     public const SCHEMA = [
         VerificationMethodStruct::class => VerificationMethodStruct::SCHEMA[VerificationMethodStruct::class],
@@ -110,8 +110,46 @@ class DidData
     }
 }
 ```
+## BORSH USAGE (PHP implementation)
 
-Note: This project is in alpha, the code to generate instructions is still being worked on `$instruction = SystemProgram::abc()`
+To get a better understanding on the implementation and usage, please refer to the following references: 
+
+- [PHP Borsh Test](https://github.com/Attestto-com/solana-php-sdk/blob/master/tests/Unit/BorshTest.php)
+- [PHP Borsh Class](https://github.com/Attestto-com/solana-php-sdk/blob/master/src/Borsh/Borsh.php)
+- [PHP Borsh Trait](https://github.com/Attestto-com/solana-php-sdk/blob/master/src/Borsh/BorshObject.php)
+
+example usage _**(This will be improved, WIP)**_: 
+```php
+/**
+     * deserializeDidData
+     *
+     * @param string $dataBase64 The base64 encoded data of the DID data account
+     * @return DidData The deserialized DID data object
+     * @example DidSolProgram::deserializeDidData('TVjvjfsd7fMA/gAAAA...');
+     */
+    static function deserializeDidData($dataBase64)
+    {
+
+        $base64String = base64_decode($dataBase64);
+        $uint8Array = array_values(unpack('C*', $base64String));
+        $didData = DidData::fromBuffer($uint8Array); // See above code block
+
+        $keyData = $didData->keyData;
+
+        $binaryString = pack('C*', ...$keyData);
+
+        $b58 = new Base58();
+        $base58String = $b58->encode($binaryString);
+        $didData->keyData = $base58String;
+        return $didData;
+    }
+```
+
+## Notes:
+
+- Most of the Magic is done in the [BorshDesealizable.php](https://github.com/Attestto-com/solana-php-sdk/blob/master/src/Borsh/BorshDeserializable.php) Trait. 
+- This project is in alpha, the code to generate instructions is still being worked on `$instruction = SystemProgram::abc()`
+- This project is maintained by a single dev, so any feedback, ideas, comments are appreciated. 
 
 ## Roadmap (WIP)
 
@@ -124,7 +162,14 @@ Note: This project is in alpha, the code to generate instructions is still being
    2. Better cache `$recentBlockhash` when sending transactions.
 6. Suggestions? Open an issue or PR :D
 
-## Testing
+## Testing & Code Coverage
+
+WIP -- Working on coverage and deprecations. See [Coverage Report](https://app.codecov.io/github/Attestto-com/solana-php-sdk).
+
+
+[![GitHub Tests Action Status](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml)
+[![Coverage (CodeCov)](https://codecov.io/github/Attestto-com/solana-php-sdk/graph/badge.svg?token=M12LECZ9QE)](https://codecov.io/github/Attestto-com/solana-php-sdk)
+
 
 ```bash
 composer test

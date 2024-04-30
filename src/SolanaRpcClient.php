@@ -2,15 +2,27 @@
 
 namespace Attestto\SolanaPhpSdk;
 
+use GuzzleHttp\Handler\StreamHandler;
+use GuzzleHttp\Psr7\Message;
+use GuzzleHttp\Psr7\Uri;
+
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\HttpFactory;
+
+
 use Attestto\SolanaPhpSdk\Exceptions\GenericException;
 use Attestto\SolanaPhpSdk\Exceptions\InvalidIdResponseException;
 use Attestto\SolanaPhpSdk\Exceptions\MethodNotFoundException;
 use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriFactoryInterface;
+use Random\RandomException;
+
 
 /**
  * @see https://docs.solana.com/developing/clients/jsonrpc-api
@@ -49,24 +61,25 @@ class SolanaRpcClient
 
     /**
      * @param string $endpoint
-     * @param ClientInterface $httpClient
-     * @param RequestFactoryInterface $requestFactory
-     * @param StreamFactoryInterface $streamFactory
-     * @param UriFactoryInterface $uriFactory
+     * @param ClientInterface|null $httpClient
+     * @param RequestFactoryInterface|null $requestFactory
+     * @param StreamFactoryInterface|Message|null $streamFactory
+     * @param UriFactoryInterface|null $uriFactory
+     * @throws RandomException
      */
     public function __construct(
         string $endpoint,
-        ClientInterface $httpClient,
-        RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface $streamFactory,
-        UriFactoryInterface $uriFactory
+        ClientInterface $httpClient = null,
+        RequestFactoryInterface $requestFactory = null,
+        StreamFactoryInterface|Message $streamFactory= null ,
+        UriFactoryInterface $uriFactory= null
     ) {
-        $this->endpoint = $endpoint;
+        $this->endpoint = $endpoint ? : self::DEVNET_ENDPOINT;
         $this->randomKey = random_int(0, 99999999);
-        $this->httpClient = $httpClient;
-        $this->requestFactory = $requestFactory;
-        $this->streamFactory = $streamFactory;
-        $this->uriFactory = $uriFactory;
+        $this->httpClient = $httpClient?: new GuzzleClient();
+        $this->requestFactory = $requestFactory?: new HttpFactory();
+      // $this->streamFactory = $streamFactory;
+      //  $this->uriFactory = $uriFactory?: new Uri();
     }
 
     /**
@@ -84,10 +97,10 @@ class SolanaRpcClient
         $body = json_encode($this->buildRpc($method, $params));
         $request = $this->requestFactory->createRequest('POST', $this->endpoint)
             ->withHeader('Content-Type', 'application/json')
-            ->withHeader('Accept', 'application/json')
-            ->withBody($this->streamFactory->createStream($body));
+            ->withHeader('Accept', 'application/json');
+            //->withBody($this->streamFactory->createStream($body));
 
-        $response = $this->httpClient->request('POST', $this->endpoint, ['body' => $request->getBody()->getContents()]);
+        $response = $this->httpClient->request('POST', $this->endpoint, ['body' => $body]);
 
 
 

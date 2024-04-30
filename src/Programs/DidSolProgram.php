@@ -9,7 +9,7 @@ use StephenHill\Base58;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
 
 /**
- * Class DidSolProgram
+ * Class DidSolProgram - Work In Progress
  * 
  * This class represents a program for interacting with the Solana blockchain using the DID (Decentralized Identifier) protocol.
  * It provides methods for creating and managing DID accounts, signing and verifying messages, and other related operations.
