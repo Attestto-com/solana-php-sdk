@@ -5,7 +5,7 @@
 [![Coverage (CodeCov)](https://codecov.io/github/Attestto-com/solana-php-sdk/graph/badge.svg?token=M12LECZ9QE)](https://codecov.io/github/Attestto-com/solana-php-sdk)
 ---
 
-## notice: Forked from the abandoned repo:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk)
+## notice: Forked from the abandoned repo:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk/pull/53)
 
 ---
 
