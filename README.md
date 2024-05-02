@@ -11,7 +11,7 @@
  / ____/ __  / ____/   ___/ / /_/ / /___/ ___ |/ /|  / ___ |    ___/ / /_/ / /| |  
 /_/   /_/ /_/_/       /____/\____/_____/_/  |_/_/ |_/_/  |_|   /____/_____/_/ |_|
 ```
-Simple PHP SDK for Solana to interact with the RPC. 
+Simple PHP SDK for interacting with the Transactions, Signatures, Borsh Serialization/Deserialization and RPCs
 ---
 Forked from the Verze repo:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk/pull/53)
 
