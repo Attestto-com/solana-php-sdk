@@ -3,13 +3,31 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/attestto/solana-php-sdk.svg?style=flat-square)](https://packagist.org/packages/attestto/solana-php-sdk)
 [![GitHub Tests Action Status](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/Attestto-com/solana-php-sdk/actions/workflows/run-tests.yml)
 [![Coverage (CodeCov)](https://codecov.io/github/Attestto-com/solana-php-sdk/graph/badge.svg?token=M12LECZ9QE)](https://codecov.io/github/Attestto-com/solana-php-sdk)
+
+```js
+    ____  __  ______     _____ ____  __    ___    _   _____       _____ ____  __ __
+   / __ \/ / / / __ \   / ___// __ \/ /   /   |  / | / /   |     / ___// __ \/ //_/
+  / /_/ / /_/ / /_/ /   \__ \/ / / / /   / /| | /  |/ / /| |     \__ \/ / / / ,<   
+ / ____/ __  / ____/   ___/ / /_/ / /___/ ___ |/ /|  / ___ |    ___/ / /_/ / /| |  
+/_/   /_/ /_/_/       /____/\____/_____/_/  |_/_/ |_/_/  |_|   /____/_____/_/ |_|  
+                                                                                   
+
+```
+Simple PHP SDK for Solana to interact with the RPC. 
 ---
-
-## notice: Forked from the abandoned repo:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk/pull/53)
+Forked from the Verze repo:  [verze-app/solana-php-sdk](https://github.com/verze-app/solana-php-sdk/pull/53)
 
 ---
+#### Motivations
 
-Simple PHP SDK for Solana.
+- To protect RPC API Keys acting as a Hosted Proxy. 
+- To enable Background Data Processing.
+- To enable Descentralized Data & Query Caching. 
+- To empower PHP Applications to interact with the Solana Network
+- To enable Async Jobs and Queries in the Background. 
+- To enable Decetralized Websockets (Push Notifications & Subscriptions)
+- To reduce Client-Sice RPC Polling, aiming at decongesting the mainnet and devnets.   
+
 
 ## Installation
 

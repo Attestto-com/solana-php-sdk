@@ -53,7 +53,7 @@ class SolanaRpcClientTest extends TestCase
      * @throws Exception
      * @throws RequestException
      * @throws GenericException
-     * @throws \Exception
+     * @throws \Exception|ClientExceptionInterface
      */
     #[Test]
     public function test_it_validates_response_id()
