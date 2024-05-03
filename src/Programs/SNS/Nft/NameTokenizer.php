@@ -77,12 +77,12 @@ class NftRecord
         return $mint;
     }
 
-enum Tag {
-    Uninitialized = 0,
-    CentralState = 1,
-    ActiveRecord = 2,
-    InactiveRecord = 3,
-}
+//enum Tag {
+//    Uninitialized = 0,
+//    CentralState = 1,
+//    ActiveRecord = 2,
+//    InactiveRecord = 3,
+//}
 }
 
 

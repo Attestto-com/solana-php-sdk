@@ -28,6 +28,7 @@ use Attestto\SolanaPhpSdk\Util\Buffer;
 class SplSnsProgram extends Program
 {
     public const NAME_TOKENIZER_ID = 'nftD3vbNkNqfj2Sd3HZwbpw4BxxKWr4AjGb9X38JeZk';
+
     public const MINT_PREFIX = 'tokenized_name';
 
     // public function createSubDomain($subdomain) : TransactionInstruction {
