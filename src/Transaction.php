@@ -647,7 +647,6 @@ class Transaction
 
             return new PublicKey($fromKeypair);
         } else {
-            dd($fromKeypair);
             throw new InputValidationException('Unsupported input: ' . get_class($fromKeypair));
         }
     }

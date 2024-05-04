@@ -8,7 +8,7 @@ use Attestto\SolanaPhpSdk\Exceptions\GenericException;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
 use Attestto\SolanaPhpSdk\Transaction;
-use Attestto\SolanaPhpSdk\KeyPair;
+use Attestto\SolanaPhpSdk\Keypair;
 use Attestto\SolanaPhpSdk\Programs\SystemProgram;
 use PHPUnit\Framework\MockObject\Exception;
 use SodiumException;

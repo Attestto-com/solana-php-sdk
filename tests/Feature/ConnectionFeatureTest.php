@@ -12,7 +12,7 @@ use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
 use Attestto\SolanaPhpSdk\Transaction;
-use Attestto\SolanaPhpSdk\KeyPair;
+use Attestto\SolanaPhpSdk\Keypair;
 use Attestto\SolanaPhpSdk\Programs\SystemProgram;
 use Attestto\SolanaPhpSdk\Util\Buffer;
 use Attestto\SolanaPhpSdk\Util\Commitment;

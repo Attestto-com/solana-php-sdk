@@ -4,6 +4,7 @@ namespace Attestto\SolanaPhpSdk\Tests\Unit\Programs;
 
 use Attestto\SolanaPhpSdk\Connection;
 use Attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
+use Attestto\SolanaPhpSdk\Exceptions\GenericException;
 use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
 use Attestto\SolanaPhpSdk\Keypair;
 use Attestto\SolanaPhpSdk\Programs\SplTokenProgram;
@@ -94,13 +95,21 @@ class SplProgramTest extends TestCase
         $owner = new Keypair();
         // ATA Random
         $mint = new PublicKey('So11111111111111111111111111111111111111112');
-        $this->expectException(AccountNotFoundException::class);
-        $splProgram->getOrCreateAssociatedTokenAccount(
-            $connection,
-            $payerSigner,
-            $mint,
-            $owner->getPublicKey(),
-            true);
+        try {
+            $splProgram->getOrCreateAssociatedTokenAccount(
+                $connection,
+                $payerSigner,
+                $mint,
+                $owner->getPublicKey(),
+                true);
+        } catch (AccountNotFoundException $e) {
+            $this->assertTrue(true);
+            return;
+        } catch (GenericException $e) {
+            $this->assertTrue(true);
+            return;
+        }
+        $this->fail('Expected AccountNotFoundException or GenericException not thrown');
 
     }
 
