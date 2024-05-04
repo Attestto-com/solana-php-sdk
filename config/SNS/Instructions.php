@@ -1,11 +1,14 @@
 <?php
 
-namespace Attestto\SolanaPhpSdk\Programs\SNS;
+namespace Attestto\config\SNS;
 
+use Attestto\SolanaPhpSdk\Programs\SNS\Attestto;
+use Attestto\SolanaPhpSdk\Programs\SNS\Buffer;
+use Attestto\SolanaPhpSdk\Programs\SNS\Numberu32;
+use Attestto\SolanaPhpSdk\Programs\SNS\Numberu64;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\SystemProgram;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
-use Attestto\SolanaPhpSdk\Interfaces\AccountKeyInterface;
 
 class SnsInstruction {
 

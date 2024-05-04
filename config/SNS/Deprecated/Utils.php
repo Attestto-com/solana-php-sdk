@@ -1,14 +1,19 @@
 <?php
 
-namespace Attestto\SolanaPhpSdk\Programs\SNS;
+namespace Attestto\config\SNS\Deprecated;
 
-use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
-use Attestto\SolanaPhpSdk\PublicKey;
-use Attestto\SolanaPhpSdk\Connection;
-use Attestto\SolanaPhpSdk\Exceptions\GenericException;
 use Attestto\SolanaPhpSdk\Accounts\NameRegistryStateAccount;
+use Attestto\SolanaPhpSdk\Connection;
+use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
 use Attestto\SolanaPhpSdk\Exceptions\SNSError;
+use Attestto\SolanaPhpSdk\Programs\SNS\ErrorType;
+use Attestto\SolanaPhpSdk\Programs\SNS\nameAccount;
+use Attestto\SolanaPhpSdk\Programs\SNS\The;
+use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\Util\Buffer;
+use const Attestto\SolanaPhpSdk\Programs\SNS\NAME_PROGRAM_ID;
+use const Attestto\SolanaPhpSdk\Programs\SNS\REVERSE_LOOKUP_CLASS;
+use const Attestto\SolanaPhpSdk\Programs\SNS\ROOT_DOMAIN_ACCOUNT;
 
 class Utils
 {
@@ -16,7 +21,7 @@ class Utils
     // config.json file should be in the same directory as this file
     public mixed $config;
     public $centralStateSNSRecords;
-    
+
 
     // Constructor
     public function __construct($config = null)
