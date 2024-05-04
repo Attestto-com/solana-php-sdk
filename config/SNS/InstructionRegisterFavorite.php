@@ -1,11 +1,14 @@
 <?php
 
+namespace Attestto\config\SNS;
+
+use Attestto\SolanaPhpSdk\Borsh\Borsh;
 use Attestto\SolanaPhpSdk\Buffer;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
-use Attestto\SolanaPhpSdk\Borsh\Borsh;
 
-class RegisterFavoriteInstruction {
+class RegisterFavoriteInstruction
+{
     public $tag;
 
     public const SCHEMA = [
@@ -14,11 +17,13 @@ class RegisterFavoriteInstruction {
         ],
     ];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->tag = 6;
     }
 
-    public function serialize(): Buffer {
+    public function serialize(): Buffer
+    {
         return Borsh::serialize(self::SCHEMA, $this);
     }
 
@@ -28,7 +33,8 @@ class RegisterFavoriteInstruction {
         PublicKey $favouriteAccount,
         PublicKey $owner,
         PublicKey $systemProgram
-    ): TransactionInstruction {
+    ): TransactionInstruction
+    {
         $data = $this->serialize();
         $keys = [
             [

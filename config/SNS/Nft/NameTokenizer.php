@@ -1,18 +1,22 @@
 <?php
 
-namespace Attestto\SolanaPhpSdk\Programs\SNS;
+namespace Attestto\config\SNS\Nft;
 
+use Attestto\SolanaPhpSdk\Programs\SNS\Buffer;
+use Attestto\SolanaPhpSdk\Programs\SNS\Exception;
 use Attestto\SolanaPhpSdk\PublicKey;
-
+use function Attestto\SolanaPhpSdk\Programs\SNS\deserialize;
+use const Attestto\SolanaPhpSdk\Programs\SNS\MINT_PREFIX;
+use const Attestto\SolanaPhpSdk\Programs\SNS\NAME_TOKENIZER_ID;
 
 
 class NftRecord
 {
-    
+
 
     public function __construct($obj)
     {
-        
+
     }
 
     public static function deserialize($data)

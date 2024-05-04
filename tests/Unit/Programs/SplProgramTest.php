@@ -13,7 +13,6 @@ use Attestto\SolanaPhpSdk\SolanaRpcClient;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Attestto\SolanaPhpSdk\PublicKey;
-use Attestto\SolanaPhpSdk\Util\Signer;
 use Attestto\SolanaPhpSdk\State\Account;
 
 

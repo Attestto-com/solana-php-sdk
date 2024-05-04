@@ -1,11 +1,14 @@
 <?php
 
+namespace Attestto\config\SNS;
+
+use Attestto\SolanaPhpSdk\Borsh\Borsh;
 use Attestto\SolanaPhpSdk\Buffer;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
-use Attestto\SolanaPhpSdk\Borsh\Borsh;
 
-class CreateWithNftInstruction {
+class CreateWithNftInstruction
+{
     public $tag;
     public $name;
     public $space;
@@ -18,13 +21,15 @@ class CreateWithNftInstruction {
         ],
     ];
 
-    public function __construct(array $obj) {
+    public function __construct(array $obj)
+    {
         $this->tag = 17;
         $this->name = $obj['name'];
         $this->space = $obj['space'];
     }
 
-    public function serialize(): Buffer {
+    public function serialize(): Buffer
+    {
         return Borsh::serialize(self::SCHEMA, $this);
     }
 
@@ -46,7 +51,8 @@ class CreateWithNftInstruction {
         PublicKey $rentSysvar,
         PublicKey $state,
         PublicKey $mplTokenMetadata
-    ): TransactionInstruction {
+    ): TransactionInstruction
+    {
         $data = $this->serialize();
         $keys = [
             [

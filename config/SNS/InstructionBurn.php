@@ -1,18 +1,18 @@
 <?php
 
-namespace Attestto\SolanaPhpSdk\Programs\SNS;
+namespace Attestto\config\SNS;
 
-use Attestto\SolanaPhpSdk\Util\Buffer;
+use Attestto\SolanaPhpSdk\Borsh\Borsh;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
-use Attestto\SolanaPhpSdk\Borsh\Borsh;
+use Attestto\SolanaPhpSdk\Util\Buffer;
 
 
 class InstructionBurn {
     public $tag;
 
     public const SCHEMA = [
-   
+
         self::class => [
             'kind' => 'struct',
             'fields' => [

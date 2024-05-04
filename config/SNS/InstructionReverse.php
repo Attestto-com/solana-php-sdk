@@ -1,30 +1,26 @@
 <?php
 
+namespace Attestto\config\SNS;
+
+use Attestto\SolanaPhpSdk\Borsh\Borsh;
 use Attestto\SolanaPhpSdk\Buffer;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
-use Attestto\SolanaPhpSdk\Borsh\Borsh;
 
-class CreateInstructionV3 {
+class CreateReverseInstruction {
     public $tag;
     public $name;
-    public $space;
-    public $referrerIdxOpt;
 
     public const SCHEMA = [
         'struct' => [
             'tag' => 'u8',
             'name' => 'string',
-            'space' => 'u32',
-            'referrerIdxOpt' => ['option' => 'u16'],
         ],
     ];
 
     public function __construct(array $obj) {
-        $this->tag = 13;
+        $this->tag = 12;
         $this->name = $obj['name'];
-        $this->space = $obj['space'];
-        $this->referrerIdxOpt = $obj['referrerIdxOpt'];
     }
 
     public function serialize(): Buffer {
@@ -35,20 +31,13 @@ class CreateInstructionV3 {
         PublicKey $programId,
         PublicKey $namingServiceProgram,
         PublicKey $rootDomain,
-        PublicKey $name,
         PublicKey $reverseLookup,
         PublicKey $systemProgram,
         PublicKey $centralState,
-        PublicKey $buyer,
-        PublicKey $buyerTokenSource,
-        PublicKey $pythMappingAcc,
-        PublicKey $pythProductAcc,
-        PublicKey $pythPriceAcc,
-        PublicKey $vault,
-        PublicKey $splTokenProgram,
+        PublicKey $feePayer,
         PublicKey $rentSysvar,
-        PublicKey $state,
-        ?PublicKey $referrerAccountOpt = null
+        ?PublicKey $parentName = null,
+        ?PublicKey $parentNameOwner = null
     ): TransactionInstruction {
         $data = $this->serialize();
         $keys = [
@@ -61,11 +50,6 @@ class CreateInstructionV3 {
                 'pubkey' => $rootDomain,
                 'isSigner' => false,
                 'isWritable' => false,
-            ],
-            [
-                'pubkey' => $name,
-                'isSigner' => false,
-                'isWritable' => true,
             ],
             [
                 'pubkey' => $reverseLookup,
@@ -83,56 +67,29 @@ class CreateInstructionV3 {
                 'isWritable' => false,
             ],
             [
-                'pubkey' => $buyer,
+                'pubkey' => $feePayer,
                 'isSigner' => true,
                 'isWritable' => true,
-            ],
-            [
-                'pubkey' => $buyerTokenSource,
-                'isSigner' => false,
-                'isWritable' => true,
-            ],
-            [
-                'pubkey' => $pythMappingAcc,
-                'isSigner' => false,
-                'isWritable' => false,
-            ],
-            [
-                'pubkey' => $pythProductAcc,
-                'isSigner' => false,
-                'isWritable' => false,
-            ],
-            [
-                'pubkey' => $pythPriceAcc,
-                'isSigner' => false,
-                'isWritable' => false,
-            ],
-            [
-                'pubkey' => $vault,
-                'isSigner' => false,
-                'isWritable' => true,
-            ],
-            [
-                'pubkey' => $splTokenProgram,
-                'isSigner' => false,
-                'isWritable' => false,
             ],
             [
                 'pubkey' => $rentSysvar,
                 'isSigner' => false,
                 'isWritable' => false,
             ],
-            [
-                'pubkey' => $state,
-                'isSigner' => false,
-                'isWritable' => false,
-            ],
         ];
 
-        if (!is_null($referrerAccountOpt)) {
+        if (!is_null($parentName)) {
             $keys[] = [
-                'pubkey' => $referrerAccountOpt,
+                'pubkey' => $parentName,
                 'isSigner' => false,
+                'isWritable' => true,
+            ];
+        }
+
+        if (!is_null($parentNameOwner)) {
+            $keys[] = [
+                'pubkey' => $parentNameOwner,
+                'isSigner' => true,
                 'isWritable' => true,
             ];
         }

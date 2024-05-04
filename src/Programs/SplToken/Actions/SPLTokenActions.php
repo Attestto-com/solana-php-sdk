@@ -3,9 +3,16 @@
 namespace Attestto\SolanaPhpSdk\Programs\SplToken\Actions;
 
 use Attestto\SolanaPhpSdk\Connection;
+use Attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
+use Attestto\SolanaPhpSdk\Exceptions\GenericException;
+use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
+use Attestto\SolanaPhpSdk\Exceptions\InvalidIdResponseException;
+use Attestto\SolanaPhpSdk\Exceptions\MethodNotFoundException;
 use Attestto\SolanaPhpSdk\Exceptions\TokenAccountNotFoundError;
 use Attestto\SolanaPhpSdk\Exceptions\TokenInvalidAccountOwnerError;
 use Attestto\SolanaPhpSdk\Exceptions\TokenInvalidMintError;
+use Attestto\SolanaPhpSdk\Exceptions\TokenOwnerOffCurveError;
+use Attestto\SolanaPhpSdk\Keypair;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\State\Account;
 use Attestto\SolanaPhpSdk\Transaction;
@@ -13,42 +20,45 @@ use Attestto\SolanaPhpSdk\Util\Commitment;
 use Attestto\SolanaPhpSdk\Util\ConfirmOptions;
 use Attestto\SolanaPhpSdk\Util\Signer;
 use Exception;
+use Psr\Http\Client\ClientExceptionInterface;
 use function Attestto\SolanaPhpSdk\Programs\SplToken\getAccount;
 
 trait SPLTokenActions {
 
     /**
      * @param Connection $connection
-     * @param Signer $payer
+     * @param Signer|Keypair $payer
      * @param PublicKey $mint
      * @param PublicKey $owner
-     * @param false $allowOwnerOffCurve
+     * @param boolean $allowOwnerOffCurve
      * @param Commitment|null $commitment
-     * @param ConfirmOptions|null $confirmOptions
-     * @param $programId
-     * @param $associatedTokenProgramId
+     * @param ConfirmOptions $confirmOptions
+     * @param PublicKey $programId
+     * @param PublicKey $associatedTokenProgramId
      * @return mixed
-     * @throws Exception
+     * @throws AccountNotFoundException
+     * @throws ClientExceptionInterface
+     * @throws InputValidationException
+     * @throws TokenInvalidAccountOwnerError
+     * @throws TokenInvalidMintError
+     * @throws TokenOwnerOffCurveError
+     * @throws GenericException
+     * @throws InvalidIdResponseException
+     * @throws MethodNotFoundException
+     * @throws \SodiumException
      */
     public function getOrCreateAssociatedTokenAccount(
         Connection     $connection,
-        Signer         $payer,
+        mixed          $payer,
         PublicKey      $mint,
         PublicKey      $owner,
-        false          $allowOwnerOffCurve = false,
+        bool           $allowOwnerOffCurve = true,
         Commitment     $commitment = null,
         ConfirmOptions $confirmOptions = null,
-                       $programId = null,
-                       $associatedTokenProgramId = null
-    ): mixed
+        PublicKey      $programId = new PublicKey(self::TOKEN_PROGRAM_ID),
+        PublicKey      $associatedTokenProgramId = new PublicKey(self::ASSOCIATED_TOKEN_PROGRAM_ID)
+    ): Account
     {
-        if (!$programId){
-            $programId = $this->SOLANA_TOKEN_PROGRAM_ID;
-        }
-        if (!$associatedTokenProgramId){
-            $associatedTokenProgramId = $this->SOLANA_TOKEN_PROGRAM_ID;
-        }
-
 
         $associatedToken = $this->getAssociatedTokenAddressSync(
             $mint,
@@ -57,16 +67,16 @@ trait SPLTokenActions {
             $programId,
             $associatedTokenProgramId
         );
-
+        $ata = $associatedToken->toBase58();
         try {
             $account = Account::getAccount($connection, $associatedToken, $commitment, $programId);
         } catch (Exception $error) {
-            if ($error instanceof TokenAccountNotFoundError || $error instanceof TokenInvalidAccountOwnerError) {
+            if ($error instanceof AccountNotFoundException || $error instanceof TokenInvalidAccountOwnerError) {
                 try {
                     $transaction = new Transaction();
                     $transaction->add(
                         $this->createAssociatedTokenAccountInstruction(
-                            $payer->publicKey,
+                            $payer->getPublicKey(),
                             $associatedToken,
                             $owner,
                             $mint,
@@ -74,10 +84,13 @@ trait SPLTokenActions {
                             $associatedTokenProgramId
                         )
                     );
-                    // TODO Send and confirm transaction
-                    //sendAndConfirmTransaction($connection, $transaction, [$payer], $confirmOptions);
+                    if (!$confirmOptions) $confirmOptions = new ConfirmOptions();
+                    $transaction->feePayer = $payer->getPublicKey();
+                    $txnHash = $connection->sendTransaction( $transaction, [$payer]);
                 } catch (Exception $error) {
                     // Ignore all errors
+                    // Account Exists but is not funded
+                    throw $error;
                 }
 
                 $account = Account::getAccount($connection, $associatedToken, $commitment, $programId);
@@ -86,8 +99,12 @@ trait SPLTokenActions {
             }
         }
 
-        if (!$account->mint->equals($mint)) throw new TokenInvalidMintError();
-        if (!$account->owner->equals($owner)) throw new TokenInvalidAccountOwnerError();
+        if ($account->mint != $mint) throw new TokenInvalidMintError(
+            $account->mint->toBase58() . ' != ' . $mint->toBase58()
+        );
+        if ($account->owner != $owner) throw new TokenInvalidAccountOwnerError(
+            $account->owner->toBase58() . ' != ' . $owner->toBase58()
+        );
 
         return $account;
     }
