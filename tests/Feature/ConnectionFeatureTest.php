@@ -146,7 +146,7 @@ class ConnectionFeatureTest extends TestCase
         $account1 = Keypair::fromSecretKey($secretKey);
         $account2 = new PublicKey('BURNKKWBSaXmUFQPaABzWWtQ97U2oByNtPiXz3cCAMpq');
 
-        $transfer1 = SystemProgram::transfer($account1->getPublicKey(), $account2->getPublicKey(), 12345678);
+        $transfer1 = SystemProgram::transfer($account1->getPublicKey(), $account2->getPublicKey(), 12345);
 
         $orgTransaction = new Transaction();
 

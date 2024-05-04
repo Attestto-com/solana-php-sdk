@@ -58,7 +58,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit tests --coverage-clover=coverage.xml --coverage-html=build/coverage/ --coverage-filter src/",
+        "test": "vendor/bin/phpunit tests --coverage-clover=coverage.xml --coverage-filter src/",
         "format": "vendor/bin/php-cs-fixer fix --allow-risk=yes"
     },
     "config": {
