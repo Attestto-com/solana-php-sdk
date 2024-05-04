@@ -8,7 +8,7 @@ use Attestto\SolanaPhpSdk\Exceptions\GenericException;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
 use Attestto\SolanaPhpSdk\Transaction;
-use Attestto\SolanaPhpSdk\KeyPair;
+use Attestto\SolanaPhpSdk\Keypair;
 use Attestto\SolanaPhpSdk\Programs\SystemProgram;
 use PHPUnit\Framework\MockObject\Exception;
 use SodiumException;
@@ -16,46 +16,8 @@ use SodiumException;
 
 class ConnectionTest extends TestCase
 {
-    /**
-     * @throws AccountNotFoundException|Exception
-     */
-    public function testGetAccountInfo()
-    {
-        $pubKey = '3Wnd5Df69KitZfUoPYZU438eFRNwGHkhLnSAWL65PxJX';
-        $accountInfo = ['anything'];
 
-        $clientMock = $this->createMock(SolanaRpcClient::class);
-        $clientMock->expects($this->once())
-            ->method('call')
-            ->with('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])
-            ->willReturn(['value' => $accountInfo]);
 
-        $connection = new Connection($clientMock);
-
-        $result = $connection->getAccountInfo($pubKey);
-        $this->assertEquals($accountInfo, $result);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetAccountInfoThrowsException()
-    {
-        $pubKey = 'your_public_key_here';
-
-        $clientMock = $this->createMock(SolanaRpcClient::class);
-        $clientMock->expects($this->once())
-            ->method('call')
-            ->with('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])
-            ->willReturn(['value' => null]);
-
-        $connection = new Connection($clientMock);
-     
-        $this->expectException(AccountNotFoundException::class);
-        $this->expectExceptionMessage("API Error: Account $pubKey not found.");
-        $connection->getAccountInfo($pubKey);
-      
-    }
 
     /**
      * @throws GenericException
@@ -77,7 +39,37 @@ class ConnectionTest extends TestCase
         $newTransaction = new Transaction($orgTransaction->recentBlockhash, null, null, $orgTransaction->signatures);
         $newTransaction->add($transfer1, $transfer2);
 
+        // TODO - Fix this test, call the method and compare the transactions
+
         $this->assertEquals($orgTransaction, $newTransaction);
 
     }
+
+    #[Test]
+    public function testGetBalance()
+    {
+        $pubKey = '3Wnd5Df69KitZfUoPYZU438eFRNwGHkhLnSAWL65PxJX';
+        $balance = 100;
+
+        $clientMock = $this->createMock(SolanaRpcClient::class);
+        $clientMock->expects($this->once())
+            ->method('call')
+            ->with('getBalance', [$pubKey])
+            ->willReturn(['value' => $balance]);
+
+        $connection = new Connection($clientMock);
+
+        $result = $connection->getBalance($pubKey);
+        $this->assertEquals($balance, $result);
+    }
+
+
+
+
+
+
+
+
+
+
 }

@@ -1,12 +1,9 @@
 <?php
 
-namespace Attestto\SolanaPhpSdk\Tests\Unit;
+namespace Attestto\SolanaPhpSdk\Tests\Unit\Programs;
 
-use Attestto\SolanaPhpSdk\Account;
-use Attestto\SolanaPhpSdk\Keypair;
-use Attestto\SolanaPhpSdk\Tests\TestCase;
 use Attestto\SolanaPhpSdk\Programs\DidSolProgram;
-use Attestto\SolanaPhpSdk\SolanaRpcClient;
+use Attestto\SolanaPhpSdk\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
 class DidSolProgramTest extends TestCase
@@ -24,15 +21,15 @@ class DidSolProgramTest extends TestCase
         $didData = DidSolProgram::deserializeDidData($base64Data);
 
         $this->assertEquals(self::DID_SUBJECT_PK, $didData->keyData);
-       
+
     }
-   
+
     #[Test]
     public function test_it_gets_did_data_account_id()
     {
-       
+
         $didId = DidSolProgram::getDidDataAccountId( self::DID_SUBJECT_PK,);
         $this->assertEquals(self::DID_ACCOUNT_ID, $didId);
-     
+
     }
 }

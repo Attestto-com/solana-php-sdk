@@ -26,8 +26,8 @@ class ConfirmOptions
      */
     public function __construct(
         bool $skipPreflight = false,
-        Commitment $commitment = null,
-        Commitment $preflightCommitment = null,
+        Commitment $commitment = new Commitment('confirmed'),
+        Commitment $preflightCommitment = new Commitment('confirmed'),
         int $maxRetries = 0,
         int $minContextSlot = 0
     ) {

@@ -35,3 +35,7 @@ If the project maintainer has any additional requirements, you will find them li
 - **Tlint styles** - attestto-specific styles. Tlint is built for apps, so there are some settings that might not make sense in a package, but [download Tlint](https://github.com/attestto-com/tlint) and run it on your pull requests to see if it suggests any reasonable changes.
 
 - **One pull request per feature** - If you want to do more than one thing, send multiple pull requests.
+
+## Code Coverage 
+
+- Configuretion can be changed for Local Coverage https://docs.phpunit.de/en/10.5/configuration.html#the-pathcoverage-attribute

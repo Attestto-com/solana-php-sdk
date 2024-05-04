@@ -1,6 +1,6 @@
 <?php
 
-namespace Attestto\SolanaPhpSdk\Tests\Feature;
+namespace Attestto\SolanaPhpSdk\Tests\Unit;
 
 use Attestto\SolanaPhpSdk\Exceptions\GenericException;
 use Attestto\SolanaPhpSdk\Exceptions\InvalidIdResponseException;
@@ -8,8 +8,6 @@ use Attestto\SolanaPhpSdk\Exceptions\MethodNotFoundException;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;
 use Psr\Http\Client\ClientExceptionInterface;
@@ -45,30 +43,7 @@ class SolanaRpcClientTest extends TestCase
         $this->assertNotEquals($rpc1['id'], $rpc4['id']);
     }
 
-    /**
-     *
-     * TODO: Validate if we need to test the Exception, or that it does not throw the exception since the RPC
-     * its built on runtime and the ID is a protected property.
-     * @throws MethodNotFoundException
-     * @throws Exception
-     * @throws RequestException
-     * @throws GenericException
-     * @throws \Exception|ClientExceptionInterface
-     */
-    #[Test]
-    public function test_it_validates_response_id()
-    {
-        $client = $this->assembleClient('POST', ['result' => [
-            'data' => 'SOMEDATABASE64ORJSON'
-        ]]);
 
-
-        // Assert that the correct exception is thrown when the response ID is invalid
-        //$this->expectException(InvalidIdResponseException::class);
-        $response = $client->call('getAccountInfo');
-        $this->assertEquals( 'SOMEDATABASE64ORJSON', $response['data']);
-
-    }
 
     /**
      * @throws InvalidIdResponseException

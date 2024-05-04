@@ -16,10 +16,10 @@ class Program
         $this->config = require __DIR__ . '/../config/solana-sdk.php';
     }
 
-    public function __call($method, $params = [])
-    {
-        return $this->client->call($method, ...$params);
-    }
+//    public function __call($method, $params = [])
+//    {
+//        return $this->client->call($method, ...$params);
+//    }
 
     public function config(string $key)
     {

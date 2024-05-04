@@ -361,8 +361,9 @@ class Transaction
      * The Transaction must be assigned a valid `recentBlockhash` before invoking this method
      *
      * @param array<Signer|Keypair> $signers
+     * @throws InputValidationException
      */
-    public function sign(...$signers)
+    public function sign(...$signers): void
     {
         $this->partialSign(...$signers);
     }
@@ -374,9 +375,12 @@ class Transaction
      *
      * All the caveats from the `sign` method apply to `partialSign`
      *
-     * @param array<Signer|Keypair> $signers $sgners PUTOs Keypairs!! 
+     * @param array<Signer|Keypair> $signers $sgners PUTOs Keypairs!!
+     * @throws GenericException
+     * @throws \SodiumException
+     * @throws InputValidationException
      */
-    public function partialSign(...$signers)
+    public function partialSign(...$signers): void
     {
         // Dedupe signers
         $uniqueSigners = $this->arrayUnique($signers);
@@ -384,7 +388,7 @@ class Transaction
         $this->signatures = array_map(function ($signer) {
             return new SignaturePubkeyPair($this->toPublicKey($signer), null);
         }, $uniqueSigners);
- 
+
         $message = $this->compileMessage();
         $signData = $message->serialize();
 
@@ -407,8 +411,9 @@ class Transaction
      * @param PublicKey $publicKey
      * @param string $signature
      * @throws GenericException
+     * @throws InputValidationException
      */
-    public function addSignature(PublicKey $publicKey, string $signature)
+    public function addSignature(PublicKey $publicKey, string $signature): void
     {
         if (strlen($signature) !== self::SIGNATURE_LENGTH) {
             throw new InputValidationException('Signature has invalid length.');
@@ -421,8 +426,9 @@ class Transaction
     /**
      * @param PublicKey $publicKey
      * @param string $signature
+     * @throws InputValidationException
      */
-    protected function _addSignature(PublicKey $publicKey, string $signature)
+    protected function _addSignature(PublicKey $publicKey, string $signature): void
     {
         $indexOfPublicKey = $this->arraySearchAccountMetaForPublicKey($this->signatures, $publicKey);
 
@@ -635,13 +641,12 @@ class Transaction
     {
         //dd($base58String);
         if ($fromKeypair instanceof HasPublicKey) {
-            
+
             return $fromKeypair->getPublicKey();
         } elseif (is_string($fromKeypair)) {
 
             return new PublicKey($fromKeypair);
         } else {
-            dd($fromKeypair);
             throw new InputValidationException('Unsupported input: ' . get_class($fromKeypair));
         }
     }

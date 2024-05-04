@@ -4,7 +4,11 @@ namespace Attestto\SolanaPhpSdk\Tests\Unit;
 
 use Attestto\SolanaPhpSdk\Account;
 use Attestto\SolanaPhpSdk\Keypair;
+use Attestto\SolanaPhpSdk\Programs\SplTokenProgram;
+use Attestto\SolanaPhpSdk\PublicKey;
+use Attestto\SolanaPhpSdk\SolanaRpcClient;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AccountTest extends TestCase
 {
@@ -41,4 +45,5 @@ class AccountTest extends TestCase
         $this->assertEquals($expectedAccount->getPublicKey(), $derivedAccount->getPublicKey());
         $this->assertEquals($expectedAccount->getSecretKey(), $derivedAccount->getSecretKey());
     }
+
 }

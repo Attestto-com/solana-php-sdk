@@ -1,12 +1,17 @@
 <?php
 
+namespace Attestto\SolanaPhpSdk\Programs\SplToken\Instructions;
+
 use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
+use Attestto\SolanaPhpSdk\Programs\SplTokenProgram;
 use Attestto\SolanaPhpSdk\Programs\SystemProgram;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
+use Attestto\SolanaPhpSdk\Util\AccountMeta;
 use Attestto\SolanaPhpSdk\Util\Buffer;
+use Attestto\SolanaPhpSdk\Programs\SplToken\Instructions\TokenInstruction;
 
-trait AssociatedTokenAccount
+trait SPLTokenInstructions
 {
 
     /**
@@ -26,11 +31,12 @@ trait AssociatedTokenAccount
         PublicKey $mint,
                   $programId = null,
                   $associatedTokenProgramId = null
-    ): TransactionInstruction {
-        if (!$programId){
+    ): TransactionInstruction
+    {
+        if (!$programId) {
             $programId = $this->SOLANA_TOKEN_PROGRAM_ID;
         }
-        if (!$associatedTokenProgramId){
+        if (!$associatedTokenProgramId) {
             $associatedTokenProgramId = $this->SOLANA_TOKEN_PROGRAM_ID;
         }
 
@@ -50,7 +56,7 @@ trait AssociatedTokenAccount
      * @param PublicKey $associatedToken
      * @param PublicKey $owner
      * @param PublicKey $mint
-     * @param Buffer    $instructionData
+     * @param Buffer $instructionData
      * @param string|null $programId
      * @param string|null $associatedTokenProgramId
      * @return TransactionInstruction
@@ -61,30 +67,43 @@ trait AssociatedTokenAccount
         PublicKey $owner,
         PublicKey $mint,
         Buffer    $instructionData,
-                  $programId = null,
-                  $associatedTokenProgramId = null
+                  $programId = new PublicKey(self::TOKEN_PROGRAM_ID),
+                  $associatedTokenProgramId = new PublicKey(self::ASSOCIATED_TOKEN_PROGRAM_ID)
     ): TransactionInstruction
     {
-        if (!$programId) {
-            $programId = $this->SOLANA_TOKEN_PROGRAM_ID;
-        }
-        if (!$associatedTokenProgramId) {
-            $associatedTokenProgramId = $this->SOLANA_TOKEN_PROGRAM_ID;
-        }
 
         $keys = [
-            ['pubkey' => $payer, 'isSigner' => true, 'isWritable' => true],
-            ['pubkey' => $associatedToken, 'isSigner' => false, 'isWritable' => true],
-            ['pubkey' => $owner, 'isSigner' => false, 'isWritable' => false],
-            ['pubkey' => $mint, 'isSigner' => false, 'isWritable' => false],
-            ['pubkey' => SystemProgram::programId(), 'isSigner' => false, 'isWritable' => false],
-            ['pubkey' => $programId, 'isSigner' => false, 'isWritable' => false],
+            new AccountMeta($payer, true, true),
+            new AccountMeta($associatedToken, false, true),
+            new AccountMeta($owner, false, false),
+            new AccountMeta($mint, false, false),
+            new AccountMeta(SystemProgram::programId(), false, false),
+            new AccountMeta($programId, false, false),
         ];
+
 
         return new TransactionInstruction(
             $associatedTokenProgramId,
             $keys,
-            $instructionData->data
+            $instructionData
+        );
+    }
+
+
+    /**
+     * @throws InputValidationException
+     */
+    function createSyncNativeInstruction(PublicKey $owner, string $programId = self::TOKEN_PROGRAM_ID): TransactionInstruction
+    {
+
+        $keys = [
+            new AccountMeta($owner, false, true),
+        ];
+        $data = str_repeat("\0", TokenInstruction::SyncNative);
+        return new TransactionInstruction(
+            new PublicKey($programId),
+            $keys,
+            $data
         );
     }
 }

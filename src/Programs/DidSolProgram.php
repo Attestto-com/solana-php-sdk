@@ -2,6 +2,7 @@
 
 namespace Attestto\SolanaPhpSdk\Programs;
 
+use Attestto\SolanaPhpSdk\Exceptions\BaseSolanaPhpSdkException;
 use Attestto\SolanaPhpSdk\Program;
 use Attestto\SolanaPhpSdk\Accounts\DidData;
 use Attestto\SolanaPhpSdk\PublicKey;
@@ -46,9 +47,10 @@ class DidSolProgram extends Program
      *
      * @param string $did 'did:sol:[cluster]....'
      * @return string The base58 encoded public key of the DID data account
+     * @throws BaseSolanaPhpSdkException
      * @example DidSolProgram::getDidDataAccountId('did:sol:devnet:3Js7k6xYQbvXv6qUYLapYV7Sptfg37Tss9GcAyVEuUqk');
      */
-    static function getDidDataAccountId($base58SubjectPk)
+    static function getDidDataAccountId($base58SubjectPk): string
     {
 
         $b58 = new Base58();

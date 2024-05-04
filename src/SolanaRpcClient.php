@@ -89,25 +89,22 @@ class SolanaRpcClient
     {
 
         $body = json_encode($this->buildRpc($method, $params));
-//        $request = $this->requestFactory->createRequest('POST', $this->endpoint)
-//            ->withHeader('Content-Type', 'application/json')
-//            ->withHeader('Accept', 'application/json');
-//            //->withBody($this->streamFactory->createStream($body));
-
-        $response = $this->httpClient->request('POST', $this->endpoint, ['body' => $body]);
-
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'body' => $body,
+        ];
+        $response = $this->httpClient->request('POST', $this->endpoint, $options);
 
         $resp_body = $response->getBody()->getContents();
         $resp_object = json_decode($resp_body, true);
 
         $this->validateResponse($resp_object, $method);
 
-        // Decode JSON response body and return result
 
-
-        // Decode JSON response body
-
-        return $resp_object['params']['result'] ?? null;
+        return $resp_object['result'] ?? null;
     }
     /**
      * @param string $method
