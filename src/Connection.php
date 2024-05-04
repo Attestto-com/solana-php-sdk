@@ -146,7 +146,8 @@ class Connection extends Program
      */
     public function requestAirdrop(array $params = []): string
     {
-        return $this->client->call('requestAirdrop', $params );
+        return $response = $this->client->call('requestAirdrop', $params );
+
     }
 
 }

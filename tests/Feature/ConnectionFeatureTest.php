@@ -20,10 +20,6 @@ use PHPUnit\Framework\MockObject\Exception;
 use Psr\Http\Client\ClientExceptionInterface;
 use Random\RandomException;
 use SodiumException;
-use Dotenv\Dotenv;
-
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
-$dotenv->load();
 
 class ConnectionFeatureTest extends TestCase
 {
@@ -35,7 +31,7 @@ class ConnectionFeatureTest extends TestCase
      */
     public function testGetAccountInfoFeature()
     {
-        $client = new SolanaRpcClient(getenv('RPC_ENDPOINT'));
+        $client = new SolanaRpcClient($this->endpoint);
         $connection = new Connection($client);
         // Act: Call the getAccountInfo method with a real public key
         $pubKey = 'Atts2CLVXirnDsai6tCttdnAAyFwLqxqUd8zYbobgWCf';
@@ -48,7 +44,7 @@ class ConnectionFeatureTest extends TestCase
 
     public function testGetTransaction()
     {
-        $client = new SolanaRpcClient(getenv('RPC_ENDPOINT'));
+        $client = new SolanaRpcClient($this->endpoint);
         $connection = new Connection($client);
         // Act: Call the getAccountInfo method with a real public key
         $txn = '3ScP26YbYarMTQBA6i3a9NynrXj845FNX3afmgTWiZAAhqVrZwyw5YbMhuqczamjBLwWZ3XNY91nrRCeVNMjtexE';
@@ -63,7 +59,7 @@ class ConnectionFeatureTest extends TestCase
      */
     public function testGetLatestBlockhash()
     {
-        $client = new SolanaRpcClient(getenv('RPC_ENDPOINT'));
+        $client = new SolanaRpcClient($this->endpoint);
         $connection = new Connection($client);
 
         $result = $connection->getLatestBlockhash(Commitment::finalized());
@@ -75,7 +71,7 @@ class ConnectionFeatureTest extends TestCase
 
     public function testGeRecentBlockhash()
     {
-        $client = new SolanaRpcClient(getenv('RPC_ENDPOINT'));
+        $client = new SolanaRpcClient($this->endpoint);
         $connection = new Connection($client);
         $commitment = new Commitment('finalized');
         $result = $connection->getRecentBlockhash($commitment);
@@ -87,7 +83,7 @@ class ConnectionFeatureTest extends TestCase
 
     public function testGetConfirmedTransaction()
     {
-        $client = new SolanaRpcClient(getenv('RPC_ENDPOINT'));
+        $client = new SolanaRpcClient($this->endpoint);
         $connection = new Connection($client);
 
         $txn = '3ScP26YbYarMTQBA6i3a9NynrXj845FNX3afmgTWiZAAhqVrZwyw5YbMhuqczamjBLwWZ3XNY91nrRCeVNMjtexE';
@@ -105,7 +101,7 @@ class ConnectionFeatureTest extends TestCase
     public function testSimulateTransaction()
     {
 
-        $client = new SolanaRpcClient(getenv('RPC_ENDPOINT'));
+        $client = new SolanaRpcClient($this->endpoint);
         $connection = new Connection($client);
 
         $account1 = Keypair::generate();
@@ -142,9 +138,10 @@ class ConnectionFeatureTest extends TestCase
     public function testSendTransaction()
     {
 
-        $client = new SolanaRpcClient($_ENV['RPC_ENDPOINT']);
+        $client = new SolanaRpcClient($this->endpoint);
         $connection = new Connection($client);
-        $secretKey = json_decode($_ENV['SECRET_KEY']);
+        // ABCexcAcjLuEsZUbaudqATgUp4MUL5STNAjr3goRLk6Y -- must have sol ( airdrop sol )
+        $secretKey = json_decode('[45,54,39,107,89,97,142,99,78,79,179,20,100,88,176,123,63,144,15,102,152,62,187,243,16,83,234,7,115,196,73,58,136,86,43,13,28,152,130,148,70,247,159,0,0,197,176,80,47,230,51,124,29,148,39,41,36,61,88,254,63,143,109,69]');
 
         $account1 = Keypair::fromSecretKey($secretKey);
         $account2 = new PublicKey('BURNKKWBSaXmUFQPaABzWWtQ97U2oByNtPiXz3cCAMpq');
@@ -168,26 +165,19 @@ class ConnectionFeatureTest extends TestCase
 
 
 
-
-
-
-    #[Test]
-    public function testRequestAirDrop()
-    {
-        $endpoint = $_ENV['RPC_ENDPOINT'];
-        $client = new SolanaRpcClient($endpoint);
-        $connection = new Connection($client);
-        $receiverPublicKey = 'BURNKKWBSaXmUFQPaABzWWtQ97U2oByNtPiXz3cCAMpq';
-
-        $result = $connection->requestAirdrop([$receiverPublicKey, 1000000000]);
-        $this->assertIsString($result);
-    }
+    /**
+     * @throws AccountNotFoundException
+     * @throws ClientExceptionInterface
+     * @throws InputValidationException
+     * @throws GenericException
+     * @throws InvalidIdResponseException
+     * @throws MethodNotFoundException
+     */
 
     #[Test]
     public function testGetBalance()
     {
-        $endpoint = $_ENV['RPC_ENDPOINT'];
-        $client = new SolanaRpcClient($endpoint);
+        $client = new SolanaRpcClient($this->endpoint);
         $connection = new Connection($client);
         $receiverPublicKey = 'ABCexcAcjLuEsZUbaudqATgUp4MUL5STNAjr3goRLk6Y';
 

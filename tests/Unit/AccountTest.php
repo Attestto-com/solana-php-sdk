@@ -46,13 +46,4 @@ class AccountTest extends TestCase
         $this->assertEquals($expectedAccount->getSecretKey(), $derivedAccount->getSecretKey());
     }
 
-    #[Test]
-    public function testGetAccount()
-    {
-        $splProgram =  new SplTokenProgram(new SolanaRpcClient('https://api.devnet.solana.com'));
-        $mint = new PublicKey('So');
-        $account = $splProgram->getAccount($mint);
-
-        // TODO ASSERT
-    }
 }

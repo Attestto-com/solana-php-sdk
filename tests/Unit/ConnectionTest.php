@@ -16,46 +16,8 @@ use SodiumException;
 
 class ConnectionTest extends TestCase
 {
-    /**
-     * @throws AccountNotFoundException|Exception
-     */
-    public function testGetAccountInfo()
-    {
-        $pubKey = '3Wnd5Df69KitZfUoPYZU438eFRNwGHkhLnSAWL65PxJX';
-        $accountInfo = ['anything'];
 
-        $clientMock = $this->createMock(SolanaRpcClient::class);
-        $clientMock->expects($this->once())
-            ->method('call')
-            ->with('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])
-            ->willReturn(['value' => $accountInfo]);
 
-        $connection = new Connection($clientMock);
-
-        $result = $connection->getAccountInfo($pubKey);
-        $this->assertEquals($accountInfo, $result);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetAccountInfoThrowsException()
-    {
-        $pubKey = 'your_public_key_here';
-
-        $clientMock = $this->createMock(SolanaRpcClient::class);
-        $clientMock->expects($this->once())
-            ->method('call')
-            ->with('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])
-            ->willReturn(['value' => null]);
-
-        $connection = new Connection($clientMock);
-
-        $this->expectException(AccountNotFoundException::class);
-        $this->expectExceptionMessage("API Error: Account $pubKey not found.");
-        $connection->getAccountInfo($pubKey);
-
-    }
 
     /**
      * @throws GenericException

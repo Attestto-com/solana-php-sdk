@@ -3,11 +3,13 @@
 namespace Attestto\SolanaPhpSdk\Programs\SplToken\Instructions;
 
 use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
+use Attestto\SolanaPhpSdk\Programs\SplTokenProgram;
 use Attestto\SolanaPhpSdk\Programs\SystemProgram;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
 use Attestto\SolanaPhpSdk\Util\AccountMeta;
 use Attestto\SolanaPhpSdk\Util\Buffer;
+use Attestto\SolanaPhpSdk\Programs\SplToken\Instructions\TokenInstruction;
 
 trait SPLTokenInstructions
 {
@@ -69,12 +71,6 @@ trait SPLTokenInstructions
                   $associatedTokenProgramId = new PublicKey(self::ASSOCIATED_TOKEN_PROGRAM_ID)
     ): TransactionInstruction
     {
-        if (!$programId) {
-            $programId = $this->SOLANA_TOKEN_PROGRAM_ID;
-        }
-        if (!$associatedTokenProgramId) {
-            $associatedTokenProgramId = $this->SOLANA_TOKEN_PROGRAM_ID;
-        }
 
         $keys = [
             new AccountMeta($payer, true, true),
@@ -90,6 +86,24 @@ trait SPLTokenInstructions
             $associatedTokenProgramId,
             $keys,
             $instructionData
+        );
+    }
+
+
+    /**
+     * @throws InputValidationException
+     */
+    function createSyncNativeInstruction(PublicKey $owner, string $programId = self::TOKEN_PROGRAM_ID): TransactionInstruction
+    {
+
+        $keys = [
+            new AccountMeta($owner, false, true),
+        ];
+        $data = str_repeat("\0", TokenInstruction::SyncNative);
+        return new TransactionInstruction(
+            new PublicKey($programId),
+            $keys,
+            $data
         );
     }
 }

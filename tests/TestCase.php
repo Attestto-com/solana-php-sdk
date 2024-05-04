@@ -18,6 +18,7 @@ use Random\RandomException;
 class TestCase extends Orchestra
 {
     public mixed $config; // Holds the SDK config
+    public string $endpoint = 'https://api.devnet.solana.com';
 
     public function setUp(): void
     {
