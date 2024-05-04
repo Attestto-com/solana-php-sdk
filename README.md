@@ -195,7 +195,20 @@ example usage _**(This will be improved, WIP)**_:
 
 1. Borsh serialize and deserialize. [Done](https://github.com/Attestto-com/solana-php-sdk/tree/master/src/Borsh) - [Test(s)](https://github.com/Attestto-com/solana-php-sdk/blob/master/tests/Unit/BorshTest.php) - [Coverage](https://app.codecov.io/github/Attestto-com/solana-php-sdk/tree/master/src%2FBorsh)
 2. Improved documentation. [WIP](#) - This document + [Documentation Index](https://github.com/Attestto-com/solana-php-sdk/tree/master/docs) (https://github.com/Attestto-com/solana-php-sdk/tree/master/docs)
-3. Build out more of the Connection, SystemProgram, TokenProgram, MetaplexProgram classes. [WIP](https://github.com/Attestto-com/solana-php-sdk/tree/master/src) - [Tests](https://github.com/Attestto-com/solana-php-sdk/tree/master/tests/Unit) - [Coverage](https://app.codecov.io/github/Attestto-com/solana-php-sdk/tree/master/src)
+3. Build out more of the Connection, Message, SystemProgram, TokenProgram, MetaplexProgram classes. [WIP](https://github.com/Attestto-com/solana-php-sdk/tree/master/src) - [Tests](https://github.com/Attestto-com/solana-php-sdk/tree/master/tests/Unit) - [Coverage](https://app.codecov.io/github/Attestto-com/solana-php-sdk/tree/master/src)
+   4. [ ] Connection::class
+      5. [x] getLatestBlokchash::class [Source] - [Test] - [Coverage]
+      6. [ ] getMinimumBalanceForRentExemption()
+      7. [ ] getTokenAccountBalance()
+   6. [ ] TransactionMessage::class 
+      7. [ ] compileToV0Message()
+   8. [ ] VersionedTransaction::class
+   9. [ ] SPL-TOKEN Program
+      10. [ ] getOrCreateAssociatedTokenAccount()
+      11. [ ] getAssociatedTokenAddressSync()
+      12. [ ] createAssociatedTokenAccountInstruction()
+      11. [ ] createSyncNativeInstruction() - [Test][Coverage]
+      
 4. Improve abstractions around working with binary data. [Done?](https://github.com/Attestto-com/solana-php-sdk/tree/master/src/Borsh) - [Test(s)](https://github.com/Attestto-com/solana-php-sdk/blob/master/tests/Unit/BorshTest.php) - [Coverage](https://app.codecov.io/github/Attestto-com/solana-php-sdk/tree/master/src%2FBorsh)
 5. Optimizations:
    1. Leverage PHP more.

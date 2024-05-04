@@ -7,7 +7,7 @@ use Attestto\SolanaPhpSdk\Program;
 class SplTokenProgram extends Program
 {
     public const SOLANA_TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
-
+    use SplToken\SPLToken;
     /**
      * @param string $pubKey
      * @return mixed

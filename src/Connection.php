@@ -3,8 +3,19 @@
 namespace Attestto\SolanaPhpSdk;
 
 use Attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
+use Attestto\SolanaPhpSdk\Exceptions\GenericException;
+use Attestto\SolanaPhpSdk\Exceptions\InvalidIdResponseException;
+use Attestto\SolanaPhpSdk\Exceptions\MethodNotFoundException;
 use Attestto\SolanaPhpSdk\Util\Commitment;
+use Illuminate\Http\Client\Response;
+use Psr\Http\Client\ClientExceptionInterface;
+use SodiumException;
 
+/**
+ * Class Connection
+ * @package Attestto\SolanaPhpSdk
+ * https://solana-labs.github.io/solana-web3.js/classes/Connection.html
+ */
 class Connection extends Program
 {
     /**
@@ -55,6 +66,7 @@ class Connection extends Program
      * @param Commitment|null $commitment
      * @return array
      * @throws Exceptions\GenericException|Exceptions\MethodNotFoundException|Exceptions\InvalidIdResponseException
+     * Deprecated: Use getLatestBlockhash instead
      */
     public function getRecentBlockhash(?Commitment $commitment = null): array
     {
@@ -62,20 +74,32 @@ class Connection extends Program
     }
 
     /**
+     * @param Commitment|null $commitment CONFIRMED | 'finalized'
+     * @return array
+     * @throws Exceptions\GenericException|Exceptions\MethodNotFoundException|Exceptions\InvalidIdResponseException|\Psr\Http\Client\ClientExceptionInterface
+     */
+    public function getLatestBlockhash(?Commitment $commitment): array
+    {
+        return $this->client->call('getLatestBlockhash', array_filter([$commitment]))['value'];
+    }
+
+    /**
      * @param Transaction $transaction
      * @param Keypair[] $signers
      * @param array $params
-     * @return array|\Illuminate\Http\Client\Response
-     * @throws Exceptions\GenericException
-     * @throws Exceptions\InvalidIdResponseException
-     * @throws Exceptions\MethodNotFoundException
+     * @return array|Response
+     * @throws GenericException
+     * @throws InvalidIdResponseException
+     * @throws MethodNotFoundException
+     * @throws ClientExceptionInterface
+     * @throws SodiumException
+     * TODO Add Support for Versiones TXns
      */
-    public function sendTransaction(Transaction $transaction, array $signers, array $params = [])
+    public function sendTransaction(Transaction $transaction, array $signers, array $params = []): array|Response
     {
         if (! $transaction->recentBlockhash) {
-            $transaction->recentBlockhash = $this->getRecentBlockhash()['blockhash'];
+            $transaction->recentBlockhash = $this->getLatestBlockhash()['blockhash'];
         }
-
         $transaction->sign(...$signers);
 
         $rawBinaryString = $transaction->serialize(false);
@@ -90,13 +114,12 @@ class Connection extends Program
         
         return $this->client->call('sendTransaction', [$hashString, $send_params]);
     }
-    
-    
+
     /**
 	 * @param Transaction $transaction
 	 * @param Keypair[] $signers
 	 * @param array $params
-	 * @return array|\Illuminate\Http\Client\Response
+	 * @return array|Response
 	 * @throws Exceptions\GenericException
 	 * @throws Exceptions\InvalidIdResponseException
 	 * @throws Exceptions\MethodNotFoundException
