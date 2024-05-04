@@ -24,7 +24,7 @@ class Connection extends Program
      */
     public function getAccountInfo(string $pubKey): array
     {
-        $accountResponse = $this->client->call('getAccountInfo', [$pubKey, ["encoding" => "jsonParsed"]])['value'];
+        $accountResponse = $this->client->call('getAccountInfo', [$pubKey, ["encoding" => "base64"]])['value'];
 
         if (! $accountResponse) {
             throw new AccountNotFoundException("API Error: Account {$pubKey} not found.");
@@ -70,15 +70,15 @@ class Connection extends Program
      */
     public function getRecentBlockhash(?Commitment $commitment = null): array
     {
-        return $this->client->call('getRecentBlockhash', array_filter([$commitment]))['value'];
+        return $this->client->call('getLatestBlockhash', array_filter([$commitment]))['value'];
     }
 
     /**
-     * @param Commitment|null $commitment CONFIRMED | 'finalized'
+     * @param string|null $commitment
      * @return array
      * @throws Exceptions\GenericException|Exceptions\MethodNotFoundException|Exceptions\InvalidIdResponseException|\Psr\Http\Client\ClientExceptionInterface
      */
-    public function getLatestBlockhash(?Commitment $commitment): array
+    public function getLatestBlockhash(?Commitment $commitment = null): array
     {
         return $this->client->call('getLatestBlockhash', array_filter([$commitment]))['value'];
     }
@@ -87,15 +87,15 @@ class Connection extends Program
      * @param Transaction $transaction
      * @param Keypair[] $signers
      * @param array $params
-     * @return array|Response
+
      * @throws GenericException
      * @throws InvalidIdResponseException
      * @throws MethodNotFoundException
      * @throws ClientExceptionInterface
      * @throws SodiumException
-     * TODO Add Support for Versiones TXns
+     * TODO Add Support for Versioned TXns
      */
-    public function sendTransaction(Transaction $transaction, array $signers, array $params = []): array|Response
+    public function sendTransaction(Transaction $transaction, array $signers, array $params = [])
     {
         if (! $transaction->recentBlockhash) {
             $transaction->recentBlockhash = $this->getLatestBlockhash()['blockhash'];
@@ -107,11 +107,10 @@ class Connection extends Program
         $hashString = sodium_bin2base64($rawBinaryString, SODIUM_BASE64_VARIANT_ORIGINAL);
 
         $send_params = ['encoding' => 'base64', 'preflightCommitment' => 'confirmed'];
-        if (!is_array($params))
-            $params = [];
+
         foreach ($params as $k=>$v)
             $send_params[$k] = $v;
-        
+
         return $this->client->call('sendTransaction', [$hashString, $send_params]);
     }
 
@@ -127,18 +126,27 @@ class Connection extends Program
 	public function simulateTransaction(Transaction $transaction, array $signers, array $params = [])
 	{
 		$transaction->sign(...$signers);
-	
+
 		$rawBinaryString = $transaction->serialize(false);
-		
+
 		$hashString = sodium_bin2base64($rawBinaryString, SODIUM_BASE64_VARIANT_ORIGINAL);
-		
+
 		$send_params = ['encoding' => 'base64', 'commitment' => 'confirmed', 'sigVerify'=>true];
-		if (!is_array($params))
-			$params = [];
+
 		foreach ($params as $k=>$v)
 			$send_params[$k] = $v;
-		
+
 		return $this->client->call('simulateTransaction', [$hashString, $send_params]);
 	}
-    
+
+    /**
+     * @param string $pubKey
+     * @param array $params
+     * @return string
+     */
+    public function requestAirdrop(array $params = []): string
+    {
+        return $this->client->call('requestAirdrop', $params );
+    }
+
 }

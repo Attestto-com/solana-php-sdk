@@ -183,7 +183,7 @@ class PublicKey implements HasPublicKey
     }
 
     /**
-     * 
+     *
      * @param array $seeds
      * @param PublicKey $programId
      * @return array 2 elements, [0] = PublicKey, [1] = integer
@@ -196,7 +196,7 @@ class PublicKey implements HasPublicKey
     /**
      * Check that a pubkey is on the ed25519 curve.
      */
-    static function isOnCurve($publicKey): bool
+    static function isOnCurve(mixed $publicKey): bool
     {
         try {
             $binaryString = $publicKey instanceof PublicKey
@@ -210,7 +210,7 @@ class PublicKey implements HasPublicKey
             $_ = ParagonIE_Sodium_Compat::crypto_sign_ed25519_pk_to_curve25519($binaryString);
 
             return true;
-        } catch (RangeException $exception) {
+        } catch (RangeException|\SodiumException $exception) {
             return false;
         }
     }

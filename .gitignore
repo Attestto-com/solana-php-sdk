@@ -25,3 +25,5 @@ Homestead.json
 .history
 .idea
 .phpunit.cache
+.run/
+/.run/

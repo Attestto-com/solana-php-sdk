@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="tests" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" editBeforeRun="true">
+  <configuration default="false" name="tests" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" editBeforeRun="true" focusToolWindowBeforeRun="true">
     <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" directory="$PROJECT_DIR$/tests" use_alternative_configuration_file="true" />
     <method v="2" />
   </configuration>

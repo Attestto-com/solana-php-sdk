@@ -1,20 +1,21 @@
 <?php
 
-namespace Attestto\SolanaPhpSdk\Programs\SplToken;
+namespace Attestto\SolanaPhpSdk\Programs\SplToken\Actions;
 
 use Attestto\SolanaPhpSdk\Connection;
 use Attestto\SolanaPhpSdk\Exceptions\TokenAccountNotFoundError;
 use Attestto\SolanaPhpSdk\Exceptions\TokenInvalidAccountOwnerError;
 use Attestto\SolanaPhpSdk\Exceptions\TokenInvalidMintError;
-use Attestto\SolanaPhpSdk\Exceptions\TokenOwnerOffCurveError;
 use Attestto\SolanaPhpSdk\PublicKey;
+use Attestto\SolanaPhpSdk\State\Account;
 use Attestto\SolanaPhpSdk\Transaction;
 use Attestto\SolanaPhpSdk\Util\Commitment;
 use Attestto\SolanaPhpSdk\Util\ConfirmOptions;
 use Attestto\SolanaPhpSdk\Util\Signer;
 use Exception;
+use function Attestto\SolanaPhpSdk\Programs\SplToken\getAccount;
 
-trait SPLToken {
+trait SPLTokenActions {
 
     /**
      * @param Connection $connection
@@ -58,7 +59,7 @@ trait SPLToken {
         );
 
         try {
-            $account = parent::getAccount($connection, $associatedToken, $commitment, $programId);
+            $account = Account::getAccount($connection, $associatedToken, $commitment, $programId);
         } catch (Exception $error) {
             if ($error instanceof TokenAccountNotFoundError || $error instanceof TokenInvalidAccountOwnerError) {
                 try {
@@ -79,7 +80,7 @@ trait SPLToken {
                     // Ignore all errors
                 }
 
-                $account = getAccount($connection, $associatedToken, $commitment, $programId);
+                $account = Account::getAccount($connection, $associatedToken, $commitment, $programId);
             } else {
                 throw $error;
             }
@@ -91,37 +92,8 @@ trait SPLToken {
         return $account;
     }
 
-    public function createAssociatedTokenAccountInstruction(PublicKey $publicKey, $associatedToken, PublicKey $owner, PublicKey $mint, mixed $programId, mixed $associatedTokenProgramId): true
-    {
-        return true;
-    }
 
-    /**
-     * @param PublicKey $mint
-     * @param PublicKey $owner
-     * @param bool $allowOwnerOffCurve
-     * @param $programId
-     * @param $associatedTokenProgramId
-     * @return PublicKey
-     */
-    public function getAssociatedTokenAddressSync(
-        PublicKey $mint,
-        PublicKey $owner,
-        bool $allowOwnerOffCurve = false,
-        $programId = null,
-        $associatedTokenProgramId = null
-    ): PublicKey {
-        if (!$allowOwnerOffCurve && !PublicKey::isOnCurve($owner->toBuffer())) {
-            throw new TokenOwnerOffCurveError();
-        }
 
-        $address = PublicKey::findProgramAddressSync(
-            [$owner->toBuffer(), $programId->toBuffer(), $mint->toBuffer()],
-            $associatedTokenProgramId
-        );
-
-        return $address[0];
-    }
 
 
 }
