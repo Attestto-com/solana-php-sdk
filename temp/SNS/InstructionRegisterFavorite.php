@@ -1,6 +1,6 @@
 <?php
 
-namespace Attestto\config\SNS;
+namespace Attestto\temp\SNS;
 
 use Attestto\SolanaPhpSdk\Borsh\Borsh;
 use Attestto\SolanaPhpSdk\Buffer;

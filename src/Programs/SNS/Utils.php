@@ -1,21 +1,15 @@
 <?php
 
-namespace Attestto\config\SNS\Deprecated;
+namespace Attestto\SolanaPhpSdk\Programs\SNS;
 
 use Attestto\SolanaPhpSdk\Accounts\NameRegistryStateAccount;
 use Attestto\SolanaPhpSdk\Connection;
 use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
 use Attestto\SolanaPhpSdk\Exceptions\SNSError;
-use Attestto\SolanaPhpSdk\Programs\SNS\ErrorType;
-use Attestto\SolanaPhpSdk\Programs\SNS\nameAccount;
-use Attestto\SolanaPhpSdk\Programs\SNS\The;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\Util\Buffer;
-use const Attestto\SolanaPhpSdk\Programs\SNS\NAME_PROGRAM_ID;
-use const Attestto\SolanaPhpSdk\Programs\SNS\REVERSE_LOOKUP_CLASS;
-use const Attestto\SolanaPhpSdk\Programs\SNS\ROOT_DOMAIN_ACCOUNT;
 
-class Utils
+trait Utils
 {
 
     // config.json file should be in the same directory as this file
@@ -24,21 +18,6 @@ class Utils
 
 
     // Constructor
-    public function __construct($config = null)
-    {
-        if ($config) {
-            $this->config = $config;
-        } else {
-            $this->config = $this->loadConstants();
-        }
-        $sns_records_id = new PublicKey($this->config['BONFIDA_SNS_RECORDS_ID']);
-
-        $this->centralStateSNSRecords = PublicKey::findProgramAddressSync(
-            [$sns_records_id],
-             $sns_records_id);
-
-        return $this;
-    }
 
     private function loadConstants()
     {
@@ -49,7 +28,7 @@ class Utils
     public function getHashedNameSync(string $name): Buffer
     {
         $input = $this->config['HASH_PREFIX'] . $name;
-        $hashed = hash('sha256', Buffer::from($input));
+        $hashed = hash('sha256', Buffer::from($input), true);
         return Buffer::from($hashed);
     }
 
@@ -59,7 +38,7 @@ class Utils
      * @param PublicKey|null $nameParent The name parent public key
      * @return PublicKey The public key of the name account
      * @throws InputValidationException
-     * @deprecated Use {@link getNameAccountKeySync} instead
+     *
      */
     public function getNameAccountKeySync(
         Buffer $hashed_name,
@@ -67,19 +46,20 @@ class Utils
         PublicKey $nameParent = null
     ): PublicKey {
         $seeds = [$hashed_name];
+        $programIdPublicKey = new PublicKey($this->config['NAME_PROGRAM_ID']);
         if ($nameClass) {
             $seeds[] = $nameClass->toBuffer();
         } else {
-            $seeds[] = str_repeat("\0", 32);
+            $seeds[] = Buffer::alloc(32);
         }
         if ($nameParent) {
             $seeds[] = $nameParent->toBuffer();
         } else {
-            $seeds[] = str_repeat("\0", 32);
+            $seeds[] = Buffer::alloc(32);
         }
         [$nameAccountKey] = PublicKey::findProgramAddressSync(
             $seeds,
-            new PublicKey($this->config['NAME_PROGRAM_ID'])
+            $programIdPublicKey
         );
         return $nameAccountKey;
     }
@@ -131,7 +111,7 @@ class Utils
             $prefix = $record ? $record : "\x00";
             $sub = $prefix . $splitted[0];
             $parentKey = $this->_deriveSync($splitted[1])['pubkey'];
-            $result = $this->_deriveSync($sub, new PublicKey($parentKey), new PublicKey($recordClass));
+            $result = $this->_deriveSync($sub, $parentKey, $recordClass);
             return array_merge($result, ['isSub' => true, 'parent' => $parentKey]);
         } else if (count($splitted) === 3 && $record) {
             // Parent key
@@ -154,7 +134,7 @@ class Utils
         // Assuming these functions exist elsewhere in your codebase
         $hashedDomainName = $this->getHashedNameSync($name);
         $pubkey = $this->getNameAccountKeySync($hashedDomainName, $classKey, $parent ?: new PublicKey($this->config['ROOT_DOMAIN_ACCOUNT']));
-        return ['pubkey' => $pubkey, 'hashed' => $hashed];
+        return ['pubkey' => $pubkey, 'hashed' => $hashedDomainName];
     }
 
 }

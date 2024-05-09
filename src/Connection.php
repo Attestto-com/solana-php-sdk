@@ -149,5 +149,27 @@ class Connection extends Program
         return $response = $this->client->call('requestAirdrop', $params );
 
     }
+    // https://solana.com/docs/rpc/http/getprogramaccounts
+    // https://sns.guide/domain-name/all-domains.html
+    public function getProgramAccounts(string $programIdBs58, $dataSlice, $filters)
+    {
+        $params = [
+                $programIdBs58,
+                [
+                    'dataSlice' => $dataSlice,
+                    'filters' => $filters,
+                    'dataSize' => 108, // 'dataSize' => 108
+                    'encoding' => 'base64',
+                    'page' => 1,
+                    'limit' => 1000
+
+                ],
+
+
+        ];
+        return $this->client->call('getProgramAccounts', $params );
+        //return $this->client->call('getAssetsByOwner', $params );
+
+    }
 
 }

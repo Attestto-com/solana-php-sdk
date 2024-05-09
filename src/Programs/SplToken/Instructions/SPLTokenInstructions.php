@@ -3,13 +3,11 @@
 namespace Attestto\SolanaPhpSdk\Programs\SplToken\Instructions;
 
 use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
-use Attestto\SolanaPhpSdk\Programs\SplTokenProgram;
 use Attestto\SolanaPhpSdk\Programs\SystemProgram;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
 use Attestto\SolanaPhpSdk\Util\AccountMeta;
 use Attestto\SolanaPhpSdk\Util\Buffer;
-use Attestto\SolanaPhpSdk\Programs\SplToken\Instructions\TokenInstruction;
 
 trait SPLTokenInstructions
 {
@@ -57,18 +55,18 @@ trait SPLTokenInstructions
      * @param PublicKey $owner
      * @param PublicKey $mint
      * @param Buffer $instructionData
-     * @param string|null $programId
-     * @param string|null $associatedTokenProgramId
+     * @param string|PublicKey|null $programId
+     * @param string|PublicKey|null $associatedTokenProgramId
      * @return TransactionInstruction
      */
     public function buildAssociatedTokenAccountInstruction(
-        PublicKey $payer,
-        PublicKey $associatedToken,
-        PublicKey $owner,
-        PublicKey $mint,
-        Buffer    $instructionData,
-                  $programId = new PublicKey(self::TOKEN_PROGRAM_ID),
-                  $associatedTokenProgramId = new PublicKey(self::ASSOCIATED_TOKEN_PROGRAM_ID)
+        PublicKey             $payer,
+        PublicKey             $associatedToken,
+        PublicKey             $owner,
+        PublicKey             $mint,
+        Buffer                $instructionData,
+        string|PublicKey|null $programId = new PublicKey(self::TOKEN_PROGRAM_ID),
+        string|PublicKey|null $associatedTokenProgramId = new PublicKey(self::ASSOCIATED_TOKEN_PROGRAM_ID)
     ): TransactionInstruction
     {
 
@@ -95,7 +93,6 @@ trait SPLTokenInstructions
      */
     function createSyncNativeInstruction(PublicKey $owner, string $programId = self::TOKEN_PROGRAM_ID): TransactionInstruction
     {
-
         $keys = [
             new AccountMeta($owner, false, true),
         ];

@@ -95,6 +95,7 @@ class SolanaRpcClient
                 'Accept' => 'application/json',
             ],
             'body' => $body,
+
         ];
         $response = $this->httpClient->request('POST', $this->endpoint, $options);
 
@@ -118,6 +119,7 @@ class SolanaRpcClient
             'id' => $this->randomKey,
             'method' => $method,
             'params' => $params,
+
         ];
     }
 

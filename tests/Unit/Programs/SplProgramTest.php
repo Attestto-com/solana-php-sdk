@@ -7,13 +7,13 @@ use Attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
 use Attestto\SolanaPhpSdk\Exceptions\GenericException;
 use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
 use Attestto\SolanaPhpSdk\Keypair;
+use Attestto\SolanaPhpSdk\Programs\SplToken\State\Account;
 use Attestto\SolanaPhpSdk\Programs\SplTokenProgram;
 use Attestto\SolanaPhpSdk\Programs\SystemProgram;
+use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use Attestto\SolanaPhpSdk\PublicKey;
-use Attestto\SolanaPhpSdk\State\Account;
 
 
 class SplProgramTest extends TestCase

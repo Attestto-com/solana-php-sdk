@@ -1,6 +1,6 @@
 <?php
 
-namespace Attestto\config\SNS\Nft;
+namespace Attestto\temp\SNS\Nft;
 
 use Attestto\SolanaPhpSdk\Programs\SNS\Buffer;
 use Attestto\SolanaPhpSdk\Programs\SNS\Exception;
