@@ -137,4 +137,27 @@ trait Utils
         return ['pubkey' => $pubkey, 'hashed' => $hashedDomainName];
     }
 
+
+    /**
+     * This function can be used to get the key of the reverse account
+     *
+     * @param string $domain The domain to compute the reverse for
+     * @param bool|null $isSub Whether the domain is a subdomain or not
+     * @return PublicKey The public key of the reverse account
+     * @throws Exception
+     * @throws SNSError
+     * @throws InputValidationException
+     */
+    public function getReverseKeySync(string $domain, bool $isSub = null): PublicKey {
+        $domainKeySync = $this->getDomainKeySync($domain);
+        $pubkey = $domainKeySync['pubkey'];
+        $parent = $domainKeySync['parent'];
+        $hashedReverseLookup = $this->getHashedNameSync($pubkey->toBase58());
+        return $this->getNameAccountKeySync(
+            $hashedReverseLookup,
+            new PublicKey($this->config['REVERSE_LOOKUP_CLASS']),
+            $isSub ? $parent : null
+        );
+    }
+
 }

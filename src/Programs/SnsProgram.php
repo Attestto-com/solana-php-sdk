@@ -4,6 +4,7 @@ namespace Attestto\SolanaPhpSdk\Programs;
 
 use Attestto\SolanaPhpSdk\Exceptions\BaseSolanaPhpSdkException;
 use Attestto\SolanaPhpSdk\Program;
+use Attestto\SolanaPhpSdk\Programs\SNS\Bindings;
 use Attestto\SolanaPhpSdk\Programs\SNS\Utils;
 use Attestto\SolanaPhpSdk\Programs\SNS\Instructions\Instructions;
 use Attestto\SolanaPhpSdk\PublicKey;
@@ -15,6 +16,7 @@ class SnsProgram extends Program
 
     use Instructions;
     use Utils;
+    use Bindings;
 
     public mixed $config;
 

@@ -5,10 +5,12 @@ namespace Attestto\SolanaPhpSdk\Tests\Unit\Programs\SNS;
 
 use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
 
+use Attestto\SolanaPhpSdk\Exceptions\SNSError;
 use Attestto\SolanaPhpSdk\Programs\SnsProgram;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\Tests\TestCase;
 use Attestto\SolanaPhpSdk\SolanaRpcClient;
+use PHPUnit\Framework\MockObject\Exception;
 
 class DerivationTest extends TestCase
 {
@@ -68,6 +70,26 @@ class DerivationTest extends TestCase
             $result = $sns->getDomainKeySync($item['domain']);
             $this->assertInstanceOf(PublicKey::class, $result['pubkey']);
             $this->assertEquals($item['address'], $result['pubkey']->toBase58());
+        }
+    }
+
+    /**
+     * @throws SNSError
+     * @throws Exception
+     * @throws InputValidationException
+     */
+    #[Test]
+    public function test_getReverseKeySync()
+    {
+        $client = $this->createMock(SolanaRpcClient::class);
+        $sns = new SnsProgram($client);
+        foreach ($this->items as $item) {
+            $result = $sns->getReverseKeySync($item['domain']);
+            $this->assertInstanceOf(PublicKey::class, $result);
+            $this->assertTrue(
+                $result->toBase58() === 'DqgmWxe2PPrfy45Ja3UPyFGwcbRzkRuwXt3NyxjX8krg' ||
+                $result->toBase58() === 'BrRErziYEA9oBoDyYrdVF9p6Gs1QtdpaZ6AQpaybeZgf'
+            );
         }
     }
 
