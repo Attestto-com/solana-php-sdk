@@ -2,10 +2,12 @@
 
 namespace Attestto\SolanaPhpSdk\Programs\SNS;
 
-use Attestto\SolanaPhpSdk\Accounts\NameRegistryStateAccount;
+use Attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
+use Attestto\SolanaPhpSdk\Programs\SNS\State\NameRegistryStateAccount;
 use Attestto\SolanaPhpSdk\Connection;
 use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
 use Attestto\SolanaPhpSdk\Exceptions\SNSError;
+
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\Util\Buffer;
 
@@ -14,7 +16,7 @@ trait Utils
 
     // config.json file should be in the same directory as this file
     public mixed $config;
-    public $centralStateSNSRecords;
+
 
 
     // Constructor
@@ -158,6 +160,16 @@ trait Utils
             new PublicKey($this->config['REVERSE_LOOKUP_CLASS']),
             $isSub ? $parent : null
         );
+    }
+
+    /**
+     * @throws SNSError
+     * @throws AccountNotFoundException
+     */
+    public function getNameOwner(Connection $connection, string $parentNameKey): array
+    {
+        return NameRegistryStateAccount::retrieve($connection, $parentNameKey);
+
     }
 
 }

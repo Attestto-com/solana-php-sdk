@@ -7,16 +7,18 @@ use Attestto\SolanaPhpSdk\Connection;
 use Attestto\SolanaPhpSdk\Exceptions\AccountNotFoundException;
 use Attestto\SolanaPhpSdk\Exceptions\SNSError;
 use Attestto\SolanaPhpSdk\Programs\SNS\State\NameRegistryStateAccount;
+use Attestto\SolanaPhpSdk\Programs\SNS\State\ReverseInstructionAccount;
 use Attestto\SolanaPhpSdk\Programs\SystemProgram;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
 use Attestto\SolanaPhpSdk\Util\Buffer;
 use Exception;
+use function PHPUnit\Framework\isInstanceOf;
 
 /**
  * @method createInstruction($NAME_PROGRAM_ID, $programId, PublicKey $nameAccountKey, PublicKey $nameOwner, PublicKey $payerKey, Buffer $hashed_name, Buffer $param, Buffer $param1, PublicKey|null $nameClass, PublicKey|null $parentName, $nameParentOwner)
  * @method getReverseKeySync(string $subdomain, true $true)
- * @method createReverseName(mixed $pubkey, string $string, PublicKey $param, mixed $parent, PublicKey $owner)
+
  * @method getNameOwner(Connection $connection, PublicKey $parentName)
  * @method retrieve(Connection $connection, mixed $parent)
  * @method transferInstruction(mixed $NAME_PROGRAM_ID, mixed $pubkey, PublicKey $newOwner, PublicKey|null $owner, $null, mixed $nameParent, $nameParentOwner)
@@ -26,11 +28,7 @@ trait Bindings
 //    use Utils;
 //    use Instructions;
 
-    /**
-     * @throws SNSError
-     * @throws AccountNotFoundException
-     * @throws Exception
-     */
+
     public function createSubdomain(
         Connection $connection,
         string $subdomain,
@@ -80,6 +78,60 @@ trait Bindings
 
         return [[], $ixs];
     }
+    /**
+     * @throws SNSError
+     * @throws AccountNotFoundException
+     * @throws Exception
+     */
+    public function createSubdomainFast(
+        Connection $connection,
+        string $subdomain,
+        PublicKey $subdomainPk,
+        PublicKey $parentPk,
+        PublicKey $owner,
+        int $space = 1000,
+        PublicKey $feePayer = null
+    ): array
+    {
+        $ixs = [];
+        $sub = explode(".", $subdomain)[0];
+        if (!$sub) {
+            throw new SNSError(SNSError::InvalidSubdomain);
+        }
+
+//        $domainKeySync = $this->getDomainKeySync($subdomain);
+//        $parent = $domainKeySync['parent'];
+//        $pubkey = $domainKeySync['pubkey'];
+
+        $lamports = 0.01 * 10 ** 9; // 0.01 SOL
+
+        $ix_create = $this->createNameRegistry(
+            $connection,
+            "\0" . $sub,
+            $space + NameRegistryStateAccount::SOL_RECORD_SIG_LEN,
+            $feePayer ?? $owner,
+            $owner,
+            $lamports,
+            null,
+            $parentPk
+        );
+        $ixs[] = $ix_create;
+
+        //$reverseKey = $this->getReverseKeySync($subdomain, true);
+       // $info = $connection->getAccountInfo($reverseKey);
+        //if (!$info['data']) {
+            $reverseName = $this->createReverseName(
+                $subdomainPk,
+                "\0" . $sub,
+                $feePayer ?? $owner,
+                $parentPk,
+                $owner
+            );
+            $ixs = array_merge($ixs, $reverseName[1]);
+       // }
+
+        return [[], $ixs];
+    }
 
     /**
      * Creates a name account with the given rent budget, allocated space, owner and class.
@@ -111,9 +163,9 @@ trait Bindings
 
         $balance = $lamports ?: $connection->getMinimumBalanceForRentExemption($space);
 
-        $nameParentOwner = null;
-        if ($parentName) {
-            $parentAccount = $this->getNameOwner($connection, $parentName);
+        $nameParentOwner = $parentName;
+        if ($parentName) { // TODO review logic
+            $parentAccount = $this->getNameOwner($connection, $parentName->toBase58());
             $nameParentOwner = $parentAccount['registry']->owner;
         }
 
@@ -187,5 +239,57 @@ trait Bindings
             $nameParentOwner
         );
     }
+
+    /**
+     * This function is used to create a reverse name.
+     *
+     * @param PublicKey $nameAccount The name account to create the reverse account for
+     * @param string $name The name of the domain
+     * @param PublicKey $feePayer The fee payer of the transaction
+     * @param PublicKey|null $parentName The parent name account
+     * @param PublicKey|null $parentNameOwner The parent name owner
+     * @return array
+     * @throws Exception
+     */
+    public function createReverseName(
+        PublicKey $nameAccount,
+        string $name,
+        PublicKey $feePayer,
+        PublicKey $parentName = null,
+        PublicKey $parentNameOwner = null
+    ): array {
+//        $centralState = $this->findProgramAddress(
+//            [$this->config['REGISTER_PROGRAM_ID']->toBuffer()],
+//            $this->config['REGISTER_PROGRAM_ID']
+//        )[0];
+
+        $hashedReverseLookup = $this->getHashedNameSync($nameAccount->toBase58());
+        $reverseLookupAccount = $this->getNameAccountKeySync(
+            $hashedReverseLookup,
+            $this->centralStateSNSRecords,
+            $parentName
+        );
+
+        $initCentralStateInstruction = new ReverseInstructionAccount($name);
+        $initCentralStateInstruction->getInstruction(
+            new PublicKey($this->config['REGISTER_PROGRAM_ID']),
+            new PublicKey($this->config['NAME_PROGRAM_ID']),
+            new PublicKey($this->config['ROOT_DOMAIN_ACCOUNT']),
+
+            $reverseLookupAccount,
+            SystemProgram::programId(),
+            $this->centralStateSNSRecords,
+            $feePayer,
+            new PublicKey($this->config['SYSVAR_RENT_PUBKEY']),
+            $parentName,
+            $parentNameOwner
+        );
+
+        $instructions = [$initCentralStateInstruction];
+
+        return [[], $instructions];
+    }
+
+
 
 }

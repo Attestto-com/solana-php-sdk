@@ -161,7 +161,7 @@ class PublicKey implements HasPublicKey
     /**
      * @param array $seeds
      * @param PublicKey $programId
-     * @return array 2 elements, [0] = PublicKey, [1] = integer
+     * @return array 2 elements, [0] = PublicKey, [1] = nonce
      * @throws BaseSolanaPhpSdkException
      */
     static function findProgramAddress(array $seeds, PublicKey $programId): array

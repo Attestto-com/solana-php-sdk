@@ -304,6 +304,7 @@ trait Instructions {
      * @param PublicKey $refundTargetKey The public key of the refund target.
      * @param PublicKey $nameOwnerKey The public key of the name owner.
      * @return TransactionInstruction The created transaction instruction.
+     * @throws InputValidationException
      */
     function deleteInstruction(
         PublicKey $nameProgramId,

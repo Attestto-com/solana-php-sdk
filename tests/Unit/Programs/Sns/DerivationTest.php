@@ -3,6 +3,7 @@
 namespace Attestto\SolanaPhpSdk\Tests\Unit\Programs\SNS;
 
 
+use Attestto\SolanaPhpSdk\Connection;
 use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
 
 use Attestto\SolanaPhpSdk\Exceptions\SNSError;
@@ -91,6 +92,21 @@ class DerivationTest extends TestCase
                 $result->toBase58() === 'BrRErziYEA9oBoDyYrdVF9p6Gs1QtdpaZ6AQpaybeZgf'
             );
         }
+    }
+
+    #[Test]
+    public function test_getNameOwner()
+    {
+        $client = new SolanaRpcClient('https://api.mainnet-beta.solana.com');
+        $connection = new Connection($client);
+        $sns = new SnsProgram($client);
+        $nameAccountKey = 'HoFfFXqFHAC8RP3duuQNzag1ieUwJRBv1HtRNiWFq4Qu';
+        $result = $sns->getNameOwner($connection, $nameAccountKey);
+        $owner = $result['registry']->owner;
+        $parent = $result['registry']->parentName;
+        $this->assertInstanceOf(PublicKey::class, $owner);
+        $this->assertEquals('CnNHzcp7L4jKiA2Rsca3hZyVwSmoqXaT8wGwzS8WvvB2', $owner->toBase58());
+        $this->assertEquals('Crf8hzfthWGbGbLTVCiqRqV5MVnbpHB1L9KQMd6gsinb', $parent->toBase58());
     }
 
 }

@@ -56,7 +56,7 @@ class NameRegistryStateAccount
         // TODO: Implement retrieveNftOwner
         //$nftOwner = retrieveNftOwner($connection, $nameAccountKey);
 
-        return ['registry' => $res, 'nftOwner' => false];
+        return ['registry' => $res, 'nftOwner' => false, 'nameAccountKey' => $nameAccountKey];
     }
 
     public static function deserialize(array $buffer): self

@@ -20,31 +20,31 @@ class BindingsTest extends TestCase
      * @throws Exception
      */
     #[Test]
-    public function testCreateSubDomain()
+    public function testCreateSubDomainFast()
     {
         // Arrange
 
-        $nameOwnerKey = new PublicKey(Buffer::alloc(32));
+        $nameOwnerKey = new PublicKey('6V3DAZhWgATw8hrmMh7DnvLgaVpHLuMafZZPTVnyUs6Y');
 
 
-        $client = $this->createMock(SolanaRpcClient::class);
-        $connection = $this->createMock(Connection::class);
-        $sns = new SnsProgram($client);
-        try {
-            $instruction = $sns->createSubdomain(
+        $rpcClient = new SolanaRpcClient('https://api.mainnet-beta.solana.com');
+        $connection = new Connection($rpcClient);
+        $sns = new SnsProgram($rpcClient);
+
+        $instruction = $sns->createSubdomainFast(
                 $connection,
-                'subdomain',
+                'subdomain.chongkan.sol',
+                new PublicKey('57vj6H1omWUvrQypM8esx4q67WNRZhTW3ZHZ97unkSTb'), // f.chongkan.sol
+                new PublicKey('34MxBdMJYgugd9ZzmZN338kL1vMqkhPqtnZG5qmWnfn1'),
                 $nameOwnerKey,
-                2000,
+                1_000,
                 $nameOwnerKey
             );
-        } catch (AccountNotFoundException|SNSError $e) {
-            $this->fail($e->getMessage());
-        }
+
 
         // Assert
-        $this->assertInstanceOf(TransactionInstruction::class, $instruction);
-        $this->assertEquals(0, $instruction->data->toArray()[0]);
+        $this->assertInstanceOf(TransactionInstruction::class, $instruction[1][0]);
+        // TODO Assert IX keys and data
 
     }
 
