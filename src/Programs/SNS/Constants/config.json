@@ -1,0 +1,93 @@
+{
+    "SYSTEM_PROGRAM_ID": "11111111111111111111111111111111",
+    "NAME_PROGRAM_ID": "namesLPneVptA9Z5rqUDD9tMTWEJwofgaYwp8cawRkX",
+    "HASH_PREFIX": "SPL Name Service",
+    "ROOT_DOMAIN_ACCOUNT": "58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx",
+    "REGISTER_PROGRAM_ID": "jCebN34bUfdeUYJT13J1yG16XWQpt5PDx6Mse9GUqhR",
+    "PYTH_FIDA_PRICE_ACC": "ETp9eKXVv1dWwHSpsXRUuXHmw24PwRkttCGVgpZEY9zF",
+    "BONFIDA_FIDA_BNB": "AUoZ3YAhV3b2rZeEH93UMZHXUZcTramBvb4d9YEVySkc",
+    "REVERSE_LOOKUP_CLASS": "33m47vH6Eav6jr5Ry86XjhRft2jRBLDnDgPSHoquXi2Z",
+    "TWITTER_VERIFICATION_AUTHORITY": "FvPH7PrVrLGKPfqaf3xJodFTjZriqrAXXLTVWEorTFBi",
+    "TWITTER_ROOT_PARENT_REGISTRY_KEY": "4YcexoW3r78zz16J2aqmukBLRwGq6rAvWzJpkYAXqebv",
+    "SOL_RECORD_SIG_LEN": 96,
+    "BONFIDA_USDC_BNB": "DmSyHDSM9eSLyvoLsPvDr5fRRFZ7Bfr3h3ULvWpgQaq7",
+    "USDC_MINT": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "SYSVAR_RENT_PUBKEY" : "SysvarRent111111111111111111111111111111111",
+    "REFERRERS": {
+        "test_wallet": "3ogYncmMM5CmytsGCqKHydmXmKUZ6sGWvizkzqwT7zb1",
+        "4everland": "DM1jJCkZZEwY5tmWbgvKRxsDFzXCdbfrYCCH1CtwguEs",
+        "bandit_network": "ADCp4QXFajHrhy4f43pD6GJFtQLkdBY2mjS9DfCk7tNW",
+        "altoscan": "2XTgjw8yi1E3Etgj4CUyRD7Zk49gynH2U9gA5N2MY4NP",
+        "solscan": "5PwNeqQPiygQks9R17jUAodZQNuhvCqqkrxSaeNE8qTR",
+        "domain_labs": "8kJqxAbqbPLGLMgB6FhLcnw2SiUEavx2aEGM3WQGhtJF",
+        "solflare": "HemvJzwxvVpWBjPETpaseAH395WAxb2G73MeUfjVkK1u",
+        "solnames": "7hMiiUtkH4StMPJxyAtvzXTUjecTniQ8czkCPusf5eSW",
+        "brave": "DGpjHo4yYA3NgHvhHTp3XfBFrESsx1DnhfTr8D881ZBM",
+        "585_eth": "7vWSqSw1eCXZXXUubuHWssXELNQ8MLaDgAs2ErEfCKxn",
+        "wdotsol": "5F6gcdzpw7wUjNEugdsD4aLJdEQ4Wt8d6E85vaQXZQSJ",
+        "godid": "XEy9o73JBN2pEuN7aspe8mVLaWbL4ozjJs1tNRxx8bL"
+    },
+    "TOKENS_SYM_MINT": {
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": "USDC",
+        "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB": "USDT",
+        "So11111111111111111111111111111111111111112": "SOL",
+        "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp": "FIDA",
+        "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So": "MSOL",
+        "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263": "BONK",
+        "EPeUFDgHRxs9xxEPVaL6kfGQvCon7jmAWKVUHuux1Tpz": "BAT",
+        "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3": "PYTH",
+        "bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1": "BSOL",
+        "6McPRfPV6bY1e9hLxWyG54W9i9Epq75QBvXg2oetBVTB": "INJ"
+    },
+    "PYTH_FEEDS": {
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
+            "price": "Gnt27xtC473ZT2Mw5u8wZ68Z3gULkSTb5DuxJy7eJotD",
+            "product": "8GWTTbNiXdmyZREXbjsZBmCRuzdPrW55dnZGDkTRjWvb"
+        },
+        "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB": {
+            "price": "3vxLXJqLqF3JG5TCbYycbKWRBbCJQLxQmBGCkyqEEefL",
+            "product": "Av6XyAMJnyi68FdsKSPYgzfXGjYrrt6jcAMwtvzLCqaM"
+        },
+        "So11111111111111111111111111111111111111112": {
+            "price": "H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG",
+            "product": "ALP8SdU9oARYVLgLR7LrqMNCYBnhtnQz1cj6bwgwQmgj"
+        },
+        "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp": {
+            "price": "ETp9eKXVv1dWwHSpsXRUuXHmw24PwRkttCGVgpZEY9zF",
+            "product": "HyEB4Goiv7QyfFStaBn49JqQzSTV1ybtVikwsMLH1f2M"
+        },
+        "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So": {
+            "price": "E4v1BBgoso9s64TQvmyownAVJbhbEPGyzA3qn4n46qj9",
+            "product": "BS2iAqT67j8hA9Jji4B8UpL3Nfw9kwPfU5s4qeaf1e7r"
+        },
+        "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263": {
+            "price": "8ihFLu5FimgTQ1Unh4dVyEHUGodJ5gJQCrQf4KUVB9bN",
+            "product": "FerFD54J6RgmQVCR5oNgpzXmz8BW2eBNhhirb1d5oifo"
+        },
+        "EPeUFDgHRxs9xxEPVaL6kfGQvCon7jmAWKVUHuux1Tpz": {
+            "price": "AbMTYZ82Xfv9PtTQ5e1fJXemXjzqEEFHP3oDLRTae6yz",
+            "product": "8xTEctXKo6Xo3EzNhSNp4TUe8mgfwWFbDUXJhuubvrKx"
+        },
+        "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3": {
+            "price": "nrYkQQQur7z8rYTST3G9GqATviK5SxTDkrqd21MW6Ue",
+            "product": "AiQB4WngNPKDe3iWAwZmMzbULDAAfUD6Sr1knfZNJj3y"
+        },
+        "bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1": {
+            "price": "AFrYBhb5wKQtxRS9UA9YRS4V3dwFm7SqmS6DHKq6YVgo",
+            "product": "3RtUHQR2LQ7su5R4zWwjupx72sWRGvLA4cFmnbHnT9M7"
+        },
+        "6McPRfPV6bY1e9hLxWyG54W9i9Epq75QBvXg2oetBVTB": {
+            "price": "9EdtbaivHQYA4Nh3XzGR6DwRaoorqXYnmpfsnFhvwuVj",
+            "product": "5Q5kyCVzssrGMd2BniSdVeRwjNWrGGrFhMrgGt4zURyA"
+        }
+    },
+    "PYTH_MAPPING_ACC": "AHtgzX45WTKfkPG53L6WYhGEXwQkN1BVknET3sVsLL8J",
+    "VAULT_OWNER_DEPRECATED": "GcWEQ9K78FV7LEHteFVciYApERk5YvQuFDQPk1yYJVXi",
+    "VAULT_OWNER": "5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR",
+    "CUSTOM_BG_TLD": "BPeXUQDqGbzxeK1LJby6ugvCBuo7kRSEUkjD726mUVsz",
+    "WOLVES_COLLECTION_METADATA": "72aLKvXeV4aansAQtxKymeXDevT5ed6sCuz9iN62ugPT",
+    "METAPLEX_ID": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
+    "NAME_TOKENIZER_ID" : "nftD3vbNkNqfj2Sd3HZwbpw4BxxKWr4AjGb9X38JeZk",
+    "MINT_PREFIX": "tokenized_name",
+    "BONFIDA_SNS_RECORDS_ID": "HP3D4D1ZCmohQGFVms2SS4LCANgJyksBf5s1F77FuFjZ"
+}

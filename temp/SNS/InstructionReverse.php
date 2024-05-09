@@ -1,58 +1,48 @@
 <?php
 
-namespace Attestto\config\SNS;
+namespace Attestto\temp\SNS;
 
+use Attestto\SolanaPhpSdk\Borsh\Borsh;
 use Attestto\SolanaPhpSdk\Buffer;
 use Attestto\SolanaPhpSdk\PublicKey;
-use Attestto\SolanaPhpSdk\SystemProgram;
-use Attestto\SolanaPhpSdk\TokenProgramId;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
 
-class CreateV2Instruction {
+class CreateReverseInstruction {
     public $tag;
     public $name;
-    public $space;
 
-    public static $schema = [
+    public const SCHEMA = [
         'struct' => [
             'tag' => 'u8',
             'name' => 'string',
-            'space' => 'u32',
         ],
     ];
 
     public function __construct(array $obj) {
-        $this->tag = 9;
+        $this->tag = 12;
         $this->name = $obj['name'];
-        $this->space = $obj['space'];
     }
 
     public function serialize(): Buffer {
-        // Implement serialization logic
+        return Borsh::serialize(self::SCHEMA, $this);
     }
 
     public function getInstruction(
         PublicKey $programId,
-        PublicKey $rentSysvarAccount,
-        PublicKey $nameProgramId,
+        PublicKey $namingServiceProgram,
         PublicKey $rootDomain,
-        PublicKey $nameAccount,
-        PublicKey $reverseLookupAccount,
+        PublicKey $reverseLookup,
+        PublicKey $systemProgram,
         PublicKey $centralState,
-        PublicKey $buyer,
-        PublicKey $buyerTokenAccount,
-        PublicKey $usdcVault,
-        PublicKey $state
+        PublicKey $feePayer,
+        PublicKey $rentSysvar,
+        ?PublicKey $parentName = null,
+        ?PublicKey $parentNameOwner = null
     ): TransactionInstruction {
         $data = $this->serialize();
         $keys = [
             [
-                'pubkey' => $rentSysvarAccount,
-                'isSigner' => false,
-                'isWritable' => false,
-            ],
-            [
-                'pubkey' => $nameProgramId,
+                'pubkey' => $namingServiceProgram,
                 'isSigner' => false,
                 'isWritable' => false,
             ],
@@ -62,17 +52,12 @@ class CreateV2Instruction {
                 'isWritable' => false,
             ],
             [
-                'pubkey' => $nameAccount,
+                'pubkey' => $reverseLookup,
                 'isSigner' => false,
                 'isWritable' => true,
             ],
             [
-                'pubkey' => $reverseLookupAccount,
-                'isSigner' => false,
-                'isWritable' => true,
-            ],
-            [
-                'pubkey' => SystemProgram::programId(),
+                'pubkey' => $systemProgram,
                 'isSigner' => false,
                 'isWritable' => false,
             ],
@@ -82,31 +67,32 @@ class CreateV2Instruction {
                 'isWritable' => false,
             ],
             [
-                'pubkey' => $buyer,
+                'pubkey' => $feePayer,
                 'isSigner' => true,
                 'isWritable' => true,
             ],
             [
-                'pubkey' => $buyerTokenAccount,
-                'isSigner' => false,
-                'isWritable' => true,
-            ],
-            [
-                'pubkey' => $usdcVault,
-                'isSigner' => false,
-                'isWritable' => true,
-            ],
-            [
-                'pubkey' => TokenProgramId::programId(),
-                'isSigner' => false,
-                'isWritable' => false,
-            ],
-            [
-                'pubkey' => $state,
+                'pubkey' => $rentSysvar,
                 'isSigner' => false,
                 'isWritable' => false,
             ],
         ];
+
+        if (!is_null($parentName)) {
+            $keys[] = [
+                'pubkey' => $parentName,
+                'isSigner' => false,
+                'isWritable' => true,
+            ];
+        }
+
+        if (!is_null($parentNameOwner)) {
+            $keys[] = [
+                'pubkey' => $parentNameOwner,
+                'isSigner' => true,
+                'isWritable' => true,
+            ];
+        }
 
         return new TransactionInstruction([
             'keys' => $keys,

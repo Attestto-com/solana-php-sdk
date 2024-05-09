@@ -1,34 +1,31 @@
 <?php
 
-namespace Attestto\config\SNS;
+namespace Attestto\temp\SNS;
 
 use Attestto\SolanaPhpSdk\Borsh\Borsh;
 use Attestto\SolanaPhpSdk\Buffer;
 use Attestto\SolanaPhpSdk\PublicKey;
 use Attestto\SolanaPhpSdk\TransactionInstruction;
 
-class CreateInstructionV3
+class CreateWithNftInstruction
 {
     public $tag;
     public $name;
     public $space;
-    public $referrerIdxOpt;
 
     public const SCHEMA = [
         'struct' => [
             'tag' => 'u8',
             'name' => 'string',
             'space' => 'u32',
-            'referrerIdxOpt' => ['option' => 'u16'],
         ],
     ];
 
     public function __construct(array $obj)
     {
-        $this->tag = 13;
+        $this->tag = 17;
         $this->name = $obj['name'];
         $this->space = $obj['space'];
-        $this->referrerIdxOpt = $obj['referrerIdxOpt'];
     }
 
     public function serialize(): Buffer
@@ -37,23 +34,23 @@ class CreateInstructionV3
     }
 
     public function getInstruction(
-        PublicKey  $programId,
-        PublicKey  $namingServiceProgram,
-        PublicKey  $rootDomain,
-        PublicKey  $name,
-        PublicKey  $reverseLookup,
-        PublicKey  $systemProgram,
-        PublicKey  $centralState,
-        PublicKey  $buyer,
-        PublicKey  $buyerTokenSource,
-        PublicKey  $pythMappingAcc,
-        PublicKey  $pythProductAcc,
-        PublicKey  $pythPriceAcc,
-        PublicKey  $vault,
-        PublicKey  $splTokenProgram,
-        PublicKey  $rentSysvar,
-        PublicKey  $state,
-        ?PublicKey $referrerAccountOpt = null
+        PublicKey $programId,
+        PublicKey $namingServiceProgram,
+        PublicKey $rootDomain,
+        PublicKey $name,
+        PublicKey $reverseLookup,
+        PublicKey $systemProgram,
+        PublicKey $centralState,
+        PublicKey $buyer,
+        PublicKey $nftSource,
+        PublicKey $nftMetadata,
+        PublicKey $nftMint,
+        PublicKey $masterEdition,
+        PublicKey $collection,
+        PublicKey $splTokenProgram,
+        PublicKey $rentSysvar,
+        PublicKey $state,
+        PublicKey $mplTokenMetadata
     ): TransactionInstruction
     {
         $data = $this->serialize();
@@ -94,27 +91,27 @@ class CreateInstructionV3
                 'isWritable' => true,
             ],
             [
-                'pubkey' => $buyerTokenSource,
+                'pubkey' => $nftSource,
                 'isSigner' => false,
                 'isWritable' => true,
             ],
             [
-                'pubkey' => $pythMappingAcc,
+                'pubkey' => $nftMetadata,
                 'isSigner' => false,
-                'isWritable' => false,
+                'isWritable' => true,
             ],
             [
-                'pubkey' => $pythProductAcc,
+                'pubkey' => $nftMint,
                 'isSigner' => false,
-                'isWritable' => false,
+                'isWritable' => true,
             ],
             [
-                'pubkey' => $pythPriceAcc,
+                'pubkey' => $masterEdition,
                 'isSigner' => false,
-                'isWritable' => false,
+                'isWritable' => true,
             ],
             [
-                'pubkey' => $vault,
+                'pubkey' => $collection,
                 'isSigner' => false,
                 'isWritable' => true,
             ],
@@ -133,15 +130,12 @@ class CreateInstructionV3
                 'isSigner' => false,
                 'isWritable' => false,
             ],
-        ];
-
-        if (!is_null($referrerAccountOpt)) {
-            $keys[] = [
-                'pubkey' => $referrerAccountOpt,
+            [
+                'pubkey' => $mplTokenMetadata,
                 'isSigner' => false,
-                'isWritable' => true,
-            ];
-        }
+                'isWritable' => false,
+            ],
+        ];
 
         return new TransactionInstruction([
             'keys' => $keys,

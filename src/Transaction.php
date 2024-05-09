@@ -87,7 +87,7 @@ class Transaction
     {
         foreach ($items as $item) {
             if ($item instanceof TransactionInstruction) {
-                array_push($this->instructions, $item);
+                $this->instructions[] = $item;
             } elseif ($item instanceof Transaction) {
                 array_push($this->instructions, ...$item->instructions);
             } else {

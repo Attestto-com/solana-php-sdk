@@ -1,6 +1,6 @@
 <?php
 
-namespace Attestto\SolanaPhpSdk\State;
+namespace Attestto\SolanaPhpSdk\Programs\SplToken\State;
 
 use Attestto\SolanaPhpSdk\Borsh\Borsh;
 use Attestto\SolanaPhpSdk\Borsh\BorshObject;

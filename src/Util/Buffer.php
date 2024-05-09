@@ -10,6 +10,7 @@ use SplFixedArray;
 
 /**
  * A convenient wrapper class around an array of bytes (int's).
+ *
  */
 class Buffer implements Countable
 {
@@ -44,6 +45,7 @@ class Buffer implements Countable
      * @var ?string $datatype
      */
     protected ?string $datatype = null;
+
 
     /**
      * @param mixed $value
@@ -82,10 +84,32 @@ class Buffer implements Countable
     }
 
     /**
+     * @throws InputValidationException
+     */
+    public static function concat(array $buffers): static
+    {
+        $data = [];
+        foreach ($buffers as $buffer) {
+            $data = array_merge($data, $buffer->toArray());
+        }
+
+        return new static($data);
+    }
+
+    /**
+     * @throws InputValidationException
+     */
+    public static function fromArray(array $array): static
+    {
+        return new static($array);
+    }
+
+    /**
      * For convenience.
      *
      * @param $value
      * @return Buffer
+     * @throws InputValidationException
      */
     public static function from($value = null, ?string $format = null, ?bool $signed = null): Buffer
     {
@@ -97,6 +121,7 @@ class Buffer implements Countable
      *
      * @param string $value
      * @return Buffer
+     * @throws InputValidationException
      */
     public static function fromBase58(string $value): Buffer
     {
@@ -239,7 +264,7 @@ class Buffer implements Countable
      * @return string
      * @throws InputValidationException
      */
-    protected function computedFormat()
+    protected function computedFormat(): string
     {
         if (! $this->datatype) {
             throw new InputValidationException('Trying to calculate format of unspecified buffer. Please specify a datatype.');
@@ -254,6 +279,16 @@ class Buffer implements Countable
             case self::TYPE_FLOAT: return self::FORMAT_FLOAT;
             default: throw new InputValidationException("Unsupported datatype.");
         }
+    }
+
+    /**
+     * @return Buffer
+     * @throws InputValidationException
+     */
+    public static function alloc(int $size): Buffer
+    {
+        return new static(array_fill(0, $size, 0));
+
     }
 
 }

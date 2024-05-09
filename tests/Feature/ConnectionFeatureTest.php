@@ -146,7 +146,7 @@ class ConnectionFeatureTest extends TestCase
         $account1 = Keypair::fromSecretKey($secretKey);
         $account2 = new PublicKey('BURNKKWBSaXmUFQPaABzWWtQ97U2oByNtPiXz3cCAMpq');
 
-        $transfer1 = SystemProgram::transfer($account1->getPublicKey(), $account2->getPublicKey(), 12345);
+        $transfer1 = SystemProgram::transfer($account1->getPublicKey(), $account2->getPublicKey(), 123);
 
         $orgTransaction = new Transaction();
 
@@ -183,6 +183,14 @@ class ConnectionFeatureTest extends TestCase
 
         $result = $connection->getBalance($receiverPublicKey);
         $this->assertIsFloat($result);
+    }
+
+    #[Test]
+    public function test_getMinimumBalanceForRentExemption(){
+        $client = new SolanaRpcClient($this->endpoint);
+        $connection = new Connection($client);
+        $result = $connection->getMinimumBalanceForRentExemption(2000);
+        $this->assertIsInt($result);
     }
 
 

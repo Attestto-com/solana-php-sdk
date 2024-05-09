@@ -1,59 +1,55 @@
 <?php
 
-namespace Attestto\config\SNS;
+namespace Attestto\SolanaPhpSdk\Programs\SNS\Instructions;
 
-use Attestto\SolanaPhpSdk\Programs\SNS\Attestto;
-use Attestto\SolanaPhpSdk\Programs\SNS\Buffer;
-use Attestto\SolanaPhpSdk\Programs\SNS\Numberu32;
-use Attestto\SolanaPhpSdk\Programs\SNS\Numberu64;
+
+
+use Attestto\SolanaPhpSdk\Exceptions\InputValidationException;
 use Attestto\SolanaPhpSdk\PublicKey;
-use Attestto\SolanaPhpSdk\SystemProgram;
+
 use Attestto\SolanaPhpSdk\TransactionInstruction;
+use Attestto\SolanaPhpSdk\Util\Buffer;
 
-class SnsInstruction {
+trait Instructions {
 
-
-    use Attestto\SolanaPhpSdk\Buffer;
-    use Attestto\SolanaPhpSdk\Numberu32;
-    use Attestto\SolanaPhpSdk\Numberu64;
-    use Attestto\SolanaPhpSdk\PublicKey;
-    use Attestto\SolanaPhpSdk\TransactionInstruction;
 
     /**
-     * Creates a transaction instruction.
-     *
-     * @param PublicKey $nameProgramId The public key of the name program.
-     * @param PublicKey $systemProgramId The public key of the system program.
-     * @param PublicKey $nameKey The public key of the name.
-     * @param PublicKey $nameOwnerKey The public key of the name owner.
-     * @param PublicKey $payerKey The public key of the payer.
-     * @param Buffer $hashed_name The hashed name.
-     * @param Numberu64 $lamports The amount of lamports.
-     * @param Numberu32 $space The amount of space.
-     * @param PublicKey|null $nameClassKey The public key of the name class.
-     * @param PublicKey|null $nameParent The public key of the name parent.
-     * @param PublicKey|null $nameParentOwner The public key of the name parent owner.
-     * @return TransactionInstruction The created transaction instruction.
+     * @param PublicKey $nameProgramId
+     * @param PublicKey $systemProgramId
+     * @param PublicKey $nameKey
+     * @param PublicKey $nameOwnerKey
+     * @param PublicKey $payerKey
+     * @param Buffer $hashed_name
+     * @param $lamports
+     * @param  $space
+     * @param PublicKey|null $nameClassKey
+     * @param PublicKey|null $nameParent
+     * @param PublicKey|null $nameParentOwner
+     * @return TransactionInstruction
+     * @throws InputValidationException
+     * @throws InputValidationException
+     * @throws InputValidationException
+     * @throws InputValidationException
      */
     function createInstruction(
-        PublicKey $nameProgramId,
-        PublicKey $systemProgramId,
-        PublicKey $nameKey,
-        PublicKey $nameOwnerKey,
-        PublicKey $payerKey,
-        Buffer $hashed_name,
-        Numberu64 $lamports,
-        Numberu32 $space,
+        PublicKey  $nameProgramId,
+        PublicKey  $systemProgramId,
+        PublicKey  $nameKey,
+        PublicKey  $nameOwnerKey,
+        PublicKey  $payerKey,
+        Buffer     $hashed_name,
+        Buffer     $lamports,
+        Buffer     $space,
         ?PublicKey $nameClassKey = null,
         ?PublicKey $nameParent = null,
         ?PublicKey $nameParentOwner = null
     ): TransactionInstruction {
         $buffers = [
-            Buffer::fromArray([0]),
-            (new Numberu32($hashed_name->length))->toBuffer(),
+            Buffer::fromArray([0]), // Create Instruction code 0
+            new Buffer(count($hashed_name), Buffer::TYPE_INT, false),
             $hashed_name,
-            $lamports->toBuffer(),
-            $space->toBuffer()
+            $lamports,
+            $space
         ];
 
         $data = Buffer::concat($buffers);
@@ -117,11 +113,11 @@ class SnsInstruction {
             ];
         }
 
-        return new TransactionInstruction([
-            'keys' => $keys,
-            'programId' => $nameProgramId,
-            'data' => $data
-        ]);
+        return new TransactionInstruction(
+            new PublicKey($nameProgramId),
+            $keys,
+            $data
+        );
     }
 
 
@@ -130,22 +126,23 @@ class SnsInstruction {
      *
      * @param PublicKey $nameProgramId The public key of the name program.
      * @param PublicKey $nameAccountKey The public key of the name account.
-     * @param Numberu32 $offset The offset.
+     * @param  $offset The offset.
      * @param Buffer $input_data The input data.
      * @param PublicKey $nameUpdateSigner The public key of the name update signer.
      * @return TransactionInstruction The created transaction instruction.
+     * @throws InputValidationException
      */
     function updateInstruction(
         PublicKey $nameProgramId,
         PublicKey $nameAccountKey,
-        Numberu32 $offset,
+        Buffer $offset,
         Buffer $input_data,
         PublicKey $nameUpdateSigner
     ): TransactionInstruction {
         $buffers = [
             Buffer::fromArray([1]),
-            $offset->toBuffer(),
-            (new Numberu32($input_data->length))->toBuffer(),
+            $offset,
+            new Buffer(count($input_data), Buffer::TYPE_INT, false),
             $input_data
         ];
 
@@ -163,11 +160,11 @@ class SnsInstruction {
             ]
         ];
 
-        return new TransactionInstruction([
-            'keys' => $keys,
-            'programId' => $nameProgramId,
-            'data' => $data
-        ]);
+        return new TransactionInstruction(
+            new PublicKey($nameProgramId),
+            $keys,
+            $data
+        );
     }
 
 
@@ -182,6 +179,7 @@ class SnsInstruction {
      * @param PublicKey|null $nameParent The public key of the name parent.
      * @param PublicKey|null $parentOwner The public key of the parent owner.
      * @return TransactionInstruction The created transaction instruction.
+     * @throws InputValidationException
      */
     function transferInstruction(
         PublicKey $nameProgramId,
@@ -234,11 +232,11 @@ class SnsInstruction {
             ];
         }
 
-        return new TransactionInstruction([
-            'keys' => $keys,
-            'programId' => $nameProgramId,
-            'data' => $data
-        ]);
+        return new TransactionInstruction(
+            new PublicKey($nameProgramId),
+            $keys,
+            $data
+        );
     }
 
 
@@ -250,8 +248,9 @@ class SnsInstruction {
      * @param PublicKey $payerKey The public key of the payer.
      * @param PublicKey $nameAccountKey The public key of the name account.
      * @param PublicKey $nameOwnerKey The public key of the name owner.
-     * @param Numberu32 $space The amount of space.
+     * @param Buffer $space A Buffer instance that should represent a 32-bit unsigned integer.
      * @return TransactionInstruction The created transaction instruction.
+     * @throws InputValidationException
      */
     function reallocInstruction(
         PublicKey $nameProgramId,
@@ -259,11 +258,11 @@ class SnsInstruction {
         PublicKey $payerKey,
         PublicKey $nameAccountKey,
         PublicKey $nameOwnerKey,
-        Numberu32 $space
+        Buffer $space
     ): TransactionInstruction {
         $buffers = [
             Buffer::fromArray([4]),
-            $space->toBuffer()
+            $space
         ];
 
         $data = Buffer::concat($buffers);
@@ -290,11 +289,11 @@ class SnsInstruction {
             ]
         ];
 
-        return new TransactionInstruction([
-            'keys' => $keys,
-            'programId' => $nameProgramId,
-            'data' => $data
-        ]);
+        return new TransactionInstruction(
+            new PublicKey($nameProgramId),
+            $keys,
+            $data
+        );
     }
 
     /**
@@ -305,6 +304,7 @@ class SnsInstruction {
      * @param PublicKey $refundTargetKey The public key of the refund target.
      * @param PublicKey $nameOwnerKey The public key of the name owner.
      * @return TransactionInstruction The created transaction instruction.
+     * @throws InputValidationException
      */
     function deleteInstruction(
         PublicKey $nameProgramId,
@@ -335,11 +335,11 @@ class SnsInstruction {
             ]
         ];
 
-        return new TransactionInstruction([
-            'keys' => $keys,
-            'programId' => $nameProgramId,
-            'data' => $data
-        ]);
+        return new TransactionInstruction(
+            new PublicKey($nameProgramId),
+            $keys,
+            $data
+        );
     }
 
 

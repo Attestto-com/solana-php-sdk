@@ -161,7 +161,8 @@ class PublicKey implements HasPublicKey
     /**
      * @param array $seeds
      * @param PublicKey $programId
-     * @return array 2 elements, [0] = PublicKey, [1] = integer
+     * @return array 2 elements, [0] = PublicKey, [1] = nonce
+     * @throws BaseSolanaPhpSdkException
      */
     static function findProgramAddress(array $seeds, PublicKey $programId): array
     {
@@ -170,7 +171,7 @@ class PublicKey implements HasPublicKey
         while ($nonce != 0) {
             try {
                 $copyOfSeedsWithNonce = $seeds;
-                array_push($copyOfSeedsWithNonce, [$nonce]);
+                $copyOfSeedsWithNonce[] = [$nonce];
                 $address = static::createProgramAddress($copyOfSeedsWithNonce, $programId);
             } catch (\Exception $exception) {
                 $nonce--;

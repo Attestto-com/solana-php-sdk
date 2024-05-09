@@ -1,4 +1,5 @@
 /vendor/
+/temp/
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -27,3 +28,5 @@ Homestead.json
 .phpunit.cache
 .run/
 /.run/
+/build/
+
