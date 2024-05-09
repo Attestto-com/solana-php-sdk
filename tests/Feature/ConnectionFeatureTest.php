@@ -185,6 +185,15 @@ class ConnectionFeatureTest extends TestCase
         $this->assertIsFloat($result);
     }
 
+    #[Test]
+    public function test_getMinimumBalanceForRentExemption(){
+        $client = new SolanaRpcClient($this->endpoint);
+        $connection = new Connection($client);
+        $result = $connection->getMinimumBalanceForRentExemption([2000]);
+        $this->assertIsInt($result);
+
+    }
+
 
 
 }

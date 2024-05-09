@@ -172,4 +172,8 @@ class Connection extends Program
 
     }
 
+    public function getMinimumBalanceForRentExemption(array $params = [1024]){
+        return $this->client->call('getMinimumBalanceForRentExemption', $params );
+    }
+
 }
