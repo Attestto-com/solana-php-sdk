@@ -14,7 +14,7 @@ use SodiumException;
 /**
  * Class Connection
  * @package Attestto\SolanaPhpSdk
- * https://solana-labs.github.io/solana-web3.js/classes/Connection.html
+ * https://solana-labs.github.io/solana-web3.js/v1.x/classes/Connection.html
  */
 class Connection extends Program
 {
