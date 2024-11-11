@@ -146,8 +146,8 @@ class SolanaRpcClient
         }
 
         // If response contains an 'error' key, handle it
-        if (isset($body['params']['error']) || isset($body['error'])) {
-            $error = $body['params']['error']? : $body['error'];
+        if(isset($body['params']) && isset($body['params']['error']) || isset($body['error'])){
+            $error = $body['params']['error']?? $body['error'];
             if ($error['code'] === self::ERROR_CODE_METHOD_NOT_FOUND) {
                 throw new MethodNotFoundException("API Error: Method $method not found.");
             } else {
