@@ -1,0 +1,43 @@
+# Dependabot configuration — ATT-1249
+#
+# Grouped so Dependabot opens one PR per group per week instead of one PR per
+# dependency. Before this file existed the repo received Dependabot ALERTS (those
+# are on by default and need no config) but no version-update PRs, so alerts
+# accumulated with nothing opening a fix.
+#
+# Grouping changes PR volume, not alert volume. A smaller PR count here is not
+# evidence of fewer vulnerabilities.
+
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    # A dependency lands in the FIRST group it matches, so the minor/patch groups
+    # are listed before the catch-all major group on purpose. Majors are separated
+    # because they need a human to read a changelog; minors and patches do not.
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+      development-dependencies:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
+      major-updates:
+        update-types: ["major"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+    groups:
+      github-actions:
+        patterns: ["*"]
